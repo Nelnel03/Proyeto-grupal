@@ -1,4 +1,4 @@
-const BASE_URL = "";
+const BASE_URL = "http://localhost:3000";
 
 async function getDatos(endpoint) {
     const response = await fetch(`${BASE_URL}/${endpoint}`);

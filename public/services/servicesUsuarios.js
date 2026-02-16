@@ -1,4 +1,4 @@
-import { getDatos, postDatos } from "./getPostPutDelete.js";
+import { getDatos, postDatos } from "./apis.js";
 
 const endpoint = "usuarios";
 
@@ -10,6 +10,14 @@ async function registrarUsuario(data) {
     if (!data.nombre || !data.correo || !data.password || !data.telefono) {
         throw new Error("Todos los campos (nombre, correo, contraseña, teléfono) son obligatorios");
     }
+
+    const usuarios = await obtenerUsuarios();
+    const existe = usuarios.some(u => u.correo === data.correo);
+
+    if (existe) {
+        throw new Error("El correo ya está registrado");
+    }
+
     return await postDatos(endpoint, data);
 }
 
