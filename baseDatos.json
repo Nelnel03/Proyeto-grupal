@@ -1,0 +1,23 @@
+{
+  "reportes": [],
+  "usuarios": [
+    {
+      "id": "ca74",
+      "nombre": "Brandon",
+      "apellido": "Chavarria",
+      "correo": "bchavarriaafwd@gmail.com",
+      "password": "2411062025",
+      "telefono": "26364026"
+    },
+    {
+      "id": "64fd",
+      "nombre": "nay",
+      "apellido": "canales",
+      "correo": "canales@gmail.com",
+      "password": "12345",
+      "telefono": "123456789"
+    }
+  ],
+  "proyectos": [],
+  "serviciosPublicos": []
+}
