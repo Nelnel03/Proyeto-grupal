@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - Dashboard</title>
 
-    <link rel="stylesheet" href="../styles/styles.css">
+    <link rel="stylesheet" href="../styles/global.css">
+    <link rel="stylesheet" href="../styles/admin.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
@@ -18,7 +19,7 @@
             <h1>Municipalidad de Puntarenas</h1>
         </div>
         <ul class="nav-links">
-            <li><a href="../pages/home.html">Inicio</a></li>
+            <li><a href="../pages/admin.html">Inicio</a></li>
             <li><a href="../pages/usuarioIniciado.html">Reportar</a></li>
         </ul>
     </div>
@@ -28,7 +29,7 @@
         <button id="btnMenuReportes" class="active">Gestión de Reportes</button>
         <button id="btnMenuProyectos">Gestión de Proyectos Viales</button>
         <button id="btnMenuServicios">Gestión de Servicios Públicos</button>
-        <a href="../pages/homeAdmin.html" class="btn-home">Volver al Home</a>
+        <button id="btnMenuMensajes">Mensajes de Contacto</button>
     </aside>
 
     <div class="main">
@@ -122,6 +123,26 @@
                     </tr>
                 </thead>
                 <tbody id="tablaServicios">
+                </tbody>
+            </table>
+        </section>
+
+        <section id="seccionMensajes" class="seccion">
+            <hr>
+            <h1>Mensajes de Contacto</h1>
+            <p>Aquí puedes ver los mensajes enviados por los ciudadanos desde el formulario de contacto.</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Remitente</th>
+                        <th>Cédula</th>
+                        <th>Correo</th>
+                        <th>Comentario</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaMensajes">
+                    <!-- Los mensajes se cargarán aquí -->
                 </tbody>
             </table>
         </section>

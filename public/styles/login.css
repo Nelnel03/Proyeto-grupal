@@ -1,0 +1,39 @@
+/* Login / Register Card Styles */
+.form-card {
+    background: white;
+    padding: 40px;
+    border-radius: var(--border-radius);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 450px;
+    margin: 50px auto;
+    border-top: 5px solid var(--primary-color);
+}
+
+.container-centrado {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    background-color: #eee;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-card h1 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: var(--secondary-color);
+}
+
+.form-card p {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.form-card a {
+    color: var(--primary-color);
+    font-weight: bold;
+}

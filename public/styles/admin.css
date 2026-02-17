@@ -1,0 +1,194 @@
+/* Admin Sidebar */
+.sidebar {
+    width: var(--sidebar-width);
+    background-color: var(--secondary-color);
+    color: white;
+    position: fixed;
+    top: var(--header-height);
+    bottom: 0;
+    left: 0;
+    padding-top: 20px;
+    overflow-y: auto;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    transition: width 0.3s ease;
+    z-index: 900;
+}
+
+.sidebar h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 15px;
+    color: var(--primary-light);
+}
+
+.sidebar button,
+.sidebar a {
+    display: block;
+    width: 100%;
+    padding: 15px 25px;
+    background: none;
+    border: none;
+    color: #ecf0f1;
+    text-align: left;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-left: 4px solid transparent;
+    text-decoration: none;
+}
+
+.sidebar button:hover,
+.sidebar a:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    padding-left: 30px;
+    color: var(--primary-light);
+}
+
+.sidebar button.active {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-left-color: var(--primary-color);
+    color: white;
+    font-weight: 600;
+}
+
+.btn-home {
+    margin-top: 50px;
+    text-align: center !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 20px !important;
+    color: var(--primary-light) !important;
+}
+
+/* Main Content */
+.main {
+    margin-left: var(--sidebar-width);
+    padding: 30px;
+    min-height: calc(100vh - var(--header-height));
+    transition: margin-left 0.3s ease;
+}
+
+/* Sections */
+.seccion {
+    display: none;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.seccion.activa {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.seccion h1 {
+    font-size: 2rem;
+}
+
+/* Admin Forms */
+.formulario {
+    background: var(--surface-color);
+    padding: 25px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 30px;
+    border-left: 5px solid var(--primary-color);
+}
+
+.formulario h3 {
+    margin-bottom: 20px;
+    color: var(--secondary-color);
+}
+
+/* Status Badges */
+.estado-select {
+    padding: 5px 10px;
+    border-radius: 20px;
+    border: 1px solid #ddd;
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+
+/* Modals */
+.modal-fondo {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(5px);
+}
+
+.modal-fondo.visible {
+    display: flex;
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-contenido {
+    background: white;
+    padding: 30px;
+    border-radius: var(--border-radius);
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    position: relative;
+    transform: translateY(0);
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal-contenido h3 {
+    margin-bottom: 20px;
+    color: var(--secondary-color);
+    text-align: center;
+}
+
+/* Admin Responsive */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        top: 0;
+        margin-bottom: 20px;
+    }
+
+    .main {
+        margin-left: 0;
+        padding: 15px;
+    }
+
+    .acciones {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+}

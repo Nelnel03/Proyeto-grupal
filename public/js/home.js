@@ -3,7 +3,13 @@
 import { obtenerProyectos } from "../services/servicesProyectos.js";
 import { obtenerServicios } from "../services/servicesServicios.js";
 import { crearReporte } from "../services/servicesReportes.js";
-import { obtenerSesionActiva } from "../services/servicesUsuarios.js";
+import { obtenerSesionActiva, cerrarSesion } from "../services/servicesUsuarios.js";
+
+// Hacer disponible cerrarSesion globalmente para el onclick en HTML
+window.cerrarSesion = async () => {
+    await cerrarSesion();
+    window.location.href = "../pages/login.html";
+};
 
 const contenedorProyectos = document.getElementById("contenedorProyectos");
 const contenedorServicios = document.getElementById("contenedorServicios");
@@ -11,6 +17,16 @@ const reporteTipo = document.getElementById("reporteTipo");
 const reporteDescripcion = document.getElementById("reporteDescripcion");
 const reporteUbicacion = document.getElementById("reporteUbicacion");
 const btnEnviarReporte = document.getElementById("btnEnviarReporte");
+
+// Protección de ruta para usuarioIniciado.html
+if (window.location.pathname.includes("usuarioIniciado.html")) {
+    obtenerSesionActiva().then(sesion => {
+        if (!sesion || !sesion.usuarioId) {
+            window.location.href = "../pages/login.html";
+        }
+    });
+}
+
 
 async function cargarProyectos() {
     try {

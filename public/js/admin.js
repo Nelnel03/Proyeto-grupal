@@ -1,20 +1,24 @@
 
+
 // Importar servicios
 import { obtenerReportes, obtenerReportePorId, actualizarReporte } from "../services/servicesReportes.js";
 import { obtenerProyectos, crearProyecto, actualizarProyecto, eliminarProyecto } from "../services/servicesProyectos.js";
 import { obtenerServicios, crearServicio, actualizarServicio, eliminarServicio } from "../services/servicesServicios.js";
+import { obtenerMensajes } from "../services/servicesContacto.js";
 
 // Referencias DOM - Navegación
 const btnMenuReportes = document.getElementById("btnMenuReportes");
 const btnMenuProyectos = document.getElementById("btnMenuProyectos");
 const btnMenuServicios = document.getElementById("btnMenuServicios");
+const btnMenuMensajes = document.getElementById("btnMenuMensajes");
 
 const seccionReportes = document.getElementById("seccionReportes");
 const seccionProyectos = document.getElementById("seccionProyectos");
 const seccionServicios = document.getElementById("seccionServicios");
+const seccionMensajes = document.getElementById("seccionMensajes");
 
-const secciones = [seccionReportes, seccionProyectos, seccionServicios];
-const botonesMenu = [btnMenuReportes, btnMenuProyectos, btnMenuServicios];
+const secciones = [seccionReportes, seccionProyectos, seccionServicios, seccionMensajes];
+const botonesMenu = [btnMenuReportes, btnMenuProyectos, btnMenuServicios, btnMenuMensajes];
 
 // Referencias DOM - Reportes
 const tablaReportes = document.getElementById("tablaReportes");
@@ -48,6 +52,9 @@ const btnCrearServicio = document.getElementById("btnCrearServicio");
 const btnCancelarServicio = document.getElementById("btnCancelarServicio");
 const tituloFormServicio = document.getElementById("tituloFormServicio");
 
+// Referencias DOM - Mensajes
+const tablaMensajes = document.getElementById("tablaMensajes");
+
 // Estado de edición
 let proyectoEditandoId = null;
 let servicioEditandoId = null;
@@ -74,6 +81,11 @@ btnMenuProyectos.addEventListener("click", () => {
 btnMenuServicios.addEventListener("click", () => {
     mostrarSeccion(2);
     cargarServicios();
+});
+
+btnMenuMensajes.addEventListener("click", () => {
+    mostrarSeccion(3);
+    cargarMensajes();
 });
 
 // MÓDULO REPORTES
@@ -540,6 +552,39 @@ async function eliminarServicioHandler(id) {
 btnCancelarServicio.addEventListener("click", () => {
     limpiarFormularioServicio();
 });
+
+// MÓDULO MENSAJES
+
+async function cargarMensajes() {
+    try {
+        const mensajes = await obtenerMensajes();
+        tablaMensajes.innerHTML = "";
+
+        if (mensajes.length === 0) {
+            tablaMensajes.innerHTML = `<tr><td colspan="5" style="text-align:center;">No hay mensajes recibidos</td></tr>`;
+            return;
+        }
+
+        mensajes.forEach((msg) => {
+            const fila = document.createElement("tr");
+            fila.innerHTML = `
+                <td>${msg.fecha || "-"}</td>
+                <td>${msg.nombre} ${msg.apellido}</td>
+                <td>${msg.cedula}</td>
+                <td>${msg.correo}</td>
+                <td>${msg.comentario}</td>
+            `;
+            tablaMensajes.appendChild(fila);
+        });
+
+    } catch (error) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Error al cargar mensajes: ' + error.message
+        });
+    }
+}
 
 // Inicialización
 cargarReportes();

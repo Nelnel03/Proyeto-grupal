@@ -90,5 +90,25 @@
   "sesionActiva": {
     "usuarioId": "adm1",
     "rol": "admin"
-  }
+  },
+  "mensajesContacto": [
+    {
+      "id": "1fcd",
+      "nombre": "Brandon",
+      "apellido": "Chavarria",
+      "cedula": "119950235",
+      "correo": "bchavarriaafwd@gmail.com",
+      "comentario": "quiero comentarles que me defeco en Brandon Chavarria",
+      "fecha": "17/2/2026"
+    },
+    {
+      "id": "a572",
+      "nombre": "Brandon",
+      "apellido": "Chavarria",
+      "cedula": "119950235",
+      "correo": "bchavarriaafwd@gmail.com",
+      "comentario": "me defeco en randall chavarria",
+      "fecha": "17/2/2026"
+    }
+  ]
 }
