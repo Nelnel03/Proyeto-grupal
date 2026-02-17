@@ -1,4 +1,4 @@
-import { getDatos, getDatosPorId, postDatos, patchDatos, deleteDatos } from "./getPostPutDelete.js";
+import { getDatos, getDatosPorId, postDatos, patchDatos, deleteDatos } from "./apis.js";
 
 const endpoint = "proyectos";
 

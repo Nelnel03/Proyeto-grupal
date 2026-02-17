@@ -1,19 +1,132 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>admin</title>
+    <title>Admin - Dashboard</title>
+
+
 </head>
+
 <body>
-    
-    <ul>
-        <li><a href="../pages/home.html"></a></li>
-    </ul>
 
+    <aside class="sidebar">
+        <h2>Panel Admin</h2>
+        <button id="btnMenuReportes" class="active">Gestión de Reportes</button>
+        <button id="btnMenuProyectos">Gestión de Proyectos Viales</button>
+        <button id="btnMenuServicios">Gestión de Servicios Públicos</button>
+        <a href="../pages/home.html" class="btn-home">Volver al Home</a>
+    </aside>
 
+    <div class="main">
 
+        <section id="seccionReportes" class="seccion activa">
+            <h1>Gestión de Reportes</h1>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Tipo</th>
+                        <th>Descripción</th>
+                        <th>Ubicación</th>
+                        <th>Estado</th>
+                        <th>Fecha</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaReportes">
+                </tbody>
+            </table>
+        </section>
 
-    <script src="../js/admin.js"></script>
+        <section id="seccionProyectos" class="seccion">
+            <h1>Gestión de Proyectos Viales</h1>
+
+            <div class="formulario">
+                <h3 id="tituloFormProyecto">Crear Proyecto</h3>
+                <input type="text" id="proyNombre" placeholder="Nombre del proyecto">
+                <textarea id="proyDescripcion" placeholder="Descripción"></textarea>
+                <input type="number" id="proyPresupuesto" placeholder="Presupuesto (₡)">
+                <input type="date" id="proyFechaInicio">
+                <select id="proyEstado">
+                    <option value="Planificación">Planificación</option>
+                    <option value="En Proceso">En Proceso</option>
+                    <option value="Completado">Completado</option>
+                </select>
+                <div class="acciones">
+                    <button id="btnCrearProyecto" class="btn btnCrear">Guardar Proyecto</button>
+                    <button id="btnCancelarProyecto" class="btn btnCancelar" style="display:none;">Cancelar</button>
+                </div>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Descripción</th>
+                        <th>Presupuesto</th>
+                        <th>Fecha Inicio</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaProyectos">
+                </tbody>
+            </table>
+        </section>
+        <section id="seccionServicios" class="seccion">
+            <h1>Gestión de Servicios Públicos</h1>
+
+            <div class="formulario">
+                <h3 id="tituloFormServicio">Crear Servicio</h3>
+                <input type="text" id="servTipo" placeholder="Tipo de servicio">
+                <textarea id="servDescripcion" placeholder="Descripción"></textarea>
+                <input type="text" id="servResponsable" placeholder="Responsable">
+                <select id="servEstado">
+                    <option value="Activo">Activo</option>
+                    <option value="Inactivo">Inactivo</option>
+                    <option value="En Mantenimiento">En Mantenimiento</option>
+                </select>
+                <div class="acciones">
+                    <button id="btnCrearServicio" class="btn btn-crear">Guardar Servicio</button>
+                    <button id="btnCancelarServicio" class="btn btn-cancelar" style="display:none;">Cancelar</button>
+                </div>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Tipo</th>
+                        <th>Descripción</th>
+                        <th>Responsable</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaServicios">
+                </tbody>
+            </table>
+        </section>
+
+    </div>
+
+    <div id="modalDetalle" class="modal-fondo">
+        <div class="modal-contenido">
+            <h3>Detalle del Reporte</h3>
+            <p><strong>ID:</strong> <span id="detalleId"></span></p>
+            <p><strong>Tipo:</strong> <span id="detalleTipo"></span></p>
+            <p><strong>Descripción:</strong> <span id="detalleDescripcion"></span></p>
+            <p><strong>Ubicación:</strong> <span id="detalleUbicacion"></span></p>
+            <p><strong>Estado:</strong> <span id="detalleEstado"></span></p>
+            <p><strong>Fecha:</strong> <span id="detalleFecha"></span></p>
+            <button id="btnCerrarModal" class="btn btn-cancelar">Cerrar</button>
+        </div>
+    </div>
+
+    <script src="../js/admin.js" type="module"></script>
 </body>
+
 </html>

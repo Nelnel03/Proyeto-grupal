@@ -1,5 +1,14 @@
 {
-  "reportes": [],
+  "reportes": [
+    {
+      "id": "e20f",
+      "tipo": "Alcantarillado",
+      "descripcion": "wswbhwsbwhbs",
+      "ubicacion": "swbwhsbwhsjw",
+      "estado": "Resuelto",
+      "fecha": "17/2/2026"
+    }
+  ],
   "usuarios": [
     {
       "id": "ca74",
@@ -16,8 +25,41 @@
       "correo": "canales@gmail.com",
       "password": "12345",
       "telefono": "123456789"
+    },
+    {
+      "id": "621e",
+      "nombre": "NELSON",
+      "apellido": "AAA",
+      "correo": "AAAAA",
+      "password": "AAAAA",
+      "telefono": "111111111"
     }
   ],
-  "proyectos": [],
-  "serviciosPublicos": []
+  "administradores": [
+    {
+      "id": "adm1",
+      "nombre": "Admin",
+      "correo": "admin@escazu.go.cr",
+      "password": "admin123"
+    }
+  ],
+  "proyectos": [
+    {
+      "id": "cd51",
+      "nombre": "Proyecto la boda ",
+      "presupuesto": "10000",
+      "fechaInicio": "2026-02-02",
+      "descripcion": "arreglo de la calle en la comunidad",
+      "estado": "Planificación"
+    }
+  ],
+  "serviciosPublicos": [
+    {
+      "id": "4e2b",
+      "tipo": "Limpieza ",
+      "descripcion": "limpieza de parque",
+      "responsable": "Unamu",
+      "estado": "Activo"
+    }
+  ]
 }

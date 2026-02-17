@@ -1,0 +1,423 @@
+
+// Importar servicios
+import { obtenerReportes, obtenerReportePorId, actualizarReporte } from "../services/servicesReportes.js";
+import { obtenerProyectos, crearProyecto, actualizarProyecto, eliminarProyecto } from "../services/servicesProyectos.js";
+import { obtenerServicios, crearServicio, actualizarServicio, eliminarServicio } from "../services/servicesServicios.js";
+
+// Referencias DOM - Navegación
+const btnMenuReportes = document.getElementById("btnMenuReportes");
+const btnMenuProyectos = document.getElementById("btnMenuProyectos");
+const btnMenuServicios = document.getElementById("btnMenuServicios");
+
+const seccionReportes = document.getElementById("seccionReportes");
+const seccionProyectos = document.getElementById("seccionProyectos");
+const seccionServicios = document.getElementById("seccionServicios");
+
+const secciones = [seccionReportes, seccionProyectos, seccionServicios];
+const botonesMenu = [btnMenuReportes, btnMenuProyectos, btnMenuServicios];
+
+// Referencias DOM - Reportes
+const tablaReportes = document.getElementById("tablaReportes");
+const modalDetalle = document.getElementById("modalDetalle");
+const btnCerrarModal = document.getElementById("btnCerrarModal");
+const detalleId = document.getElementById("detalleId");
+const detalleTipo = document.getElementById("detalleTipo");
+const detalleDescripcion = document.getElementById("detalleDescripcion");
+const detalleUbicacion = document.getElementById("detalleUbicacion");
+const detalleEstado = document.getElementById("detalleEstado");
+const detalleFecha = document.getElementById("detalleFecha");
+
+// Referencias DOM - Proyectos
+const tablaProyectos = document.getElementById("tablaProyectos");
+const proyNombre = document.getElementById("proyNombre");
+const proyDescripcion = document.getElementById("proyDescripcion");
+const proyPresupuesto = document.getElementById("proyPresupuesto");
+const proyFechaInicio = document.getElementById("proyFechaInicio");
+const proyEstado = document.getElementById("proyEstado");
+const btnCrearProyecto = document.getElementById("btnCrearProyecto");
+const btnCancelarProyecto = document.getElementById("btnCancelarProyecto");
+const tituloFormProyecto = document.getElementById("tituloFormProyecto");
+
+// Referencias DOM - Servicios
+const tablaServicios = document.getElementById("tablaServicios");
+const servTipo = document.getElementById("servTipo");
+const servDescripcion = document.getElementById("servDescripcion");
+const servResponsable = document.getElementById("servResponsable");
+const servEstado = document.getElementById("servEstado");
+const btnCrearServicio = document.getElementById("btnCrearServicio");
+const btnCancelarServicio = document.getElementById("btnCancelarServicio");
+const tituloFormServicio = document.getElementById("tituloFormServicio");
+
+// Estado de edición
+let proyectoEditandoId = null;
+let servicioEditandoId = null;
+
+// Lógica de Navegación
+function mostrarSeccion(indice) {
+    secciones.forEach((sec) => sec.classList.remove("activa"));
+    botonesMenu.forEach((btn) => btn.classList.remove("active"));
+
+    secciones[indice].classList.add("activa");
+    botonesMenu[indice].classList.add("active");
+}
+
+btnMenuReportes.addEventListener("click", () => {
+    mostrarSeccion(0);
+    cargarReportes();
+});
+
+btnMenuProyectos.addEventListener("click", () => {
+    mostrarSeccion(1);
+    cargarProyectos();
+});
+
+btnMenuServicios.addEventListener("click", () => {
+    mostrarSeccion(2);
+    cargarServicios();
+});
+
+// MÓDULO REPORTES
+
+async function cargarReportes() {
+    try {
+        const reportes = await obtenerReportes();
+        tablaReportes.innerHTML = "";
+
+        if (reportes.length === 0) {
+            tablaReportes.innerHTML = `<tr><td colspan="7" style="text-align:center;">No hay reportes registrados</td></tr>`;
+            return;
+        }
+
+        reportes.forEach((reporte) => {
+            const fila = document.createElement("tr");
+            fila.innerHTML = `
+                <td>${reporte.id}</td>
+                <td>${reporte.tipo}</td>
+                <td>${reporte.descripcion}</td>
+                <td>${reporte.ubicacion}</td>
+                <td>
+                    <select class="estado-select" data-id="${reporte.id}">
+                        <option value="Pendiente" ${reporte.estado === "Pendiente" || reporte.estado === "pendiente" ? "selected" : ""}>Pendiente</option>
+                        <option value="En Proceso" ${reporte.estado === "En Proceso" ? "selected" : ""}>En Proceso</option>
+                        <option value="Resuelto" ${reporte.estado === "Resuelto" ? "selected" : ""}>Resuelto</option>
+                    </select>
+                </td>
+                <td>${reporte.fecha}</td>
+                <td class="acciones">
+                    <button class="btn btn-detalle btn-ver-detalle" data-id="${reporte.id}">Ver Detalle</button>
+                    <button class="btn btn-actualizar btn-actualizar-estado" data-id="${reporte.id}">Actualizar</button>
+                </td>
+            `;
+            tablaReportes.appendChild(fila);
+        });
+
+        const botonesDetalle = document.querySelectorAll(".btn-ver-detalle");
+        botonesDetalle.forEach((btn) => {
+            btn.addEventListener("click", () => {
+                verDetalleReporte(btn.dataset.id);
+            });
+        });
+
+        const botonesActualizar = document.querySelectorAll(".btn-actualizar-estado");
+        botonesActualizar.forEach((btn) => {
+            btn.addEventListener("click", () => {
+                const id = btn.dataset.id;
+                const select = document.querySelector(`select[data-id="${id}"]`);
+                actualizarEstadoReporte(id, select.value);
+            });
+        });
+
+    } catch (error) {
+        alert("Error al cargar reportes: " + error.message);
+    }
+}
+
+async function verDetalleReporte(id) {
+    try {
+        const reporte = await obtenerReportePorId(id);
+        detalleId.textContent = reporte.id;
+        detalleTipo.textContent = reporte.tipo;
+        detalleDescripcion.textContent = reporte.descripcion;
+        detalleUbicacion.textContent = reporte.ubicacion;
+        detalleEstado.textContent = reporte.estado;
+        detalleFecha.textContent = reporte.fecha;
+        modalDetalle.classList.add("visible");
+    } catch (error) {
+        alert("Error al obtener detalle: " + error.message);
+    }
+}
+
+async function actualizarEstadoReporte(id, nuevoEstado) {
+    try {
+        await actualizarReporte(id, { estado: nuevoEstado });
+        alert("Estado del reporte actualizado a: " + nuevoEstado);
+        cargarReportes();
+    } catch (error) {
+        alert("Error al actualizar estado: " + error.message);
+    }
+}
+
+btnCerrarModal.addEventListener("click", () => {
+    modalDetalle.classList.remove("visible");
+});
+
+// MÓDULO PROYECTOS
+
+async function cargarProyectos() {
+    try {
+        const proyectos = await obtenerProyectos();
+        tablaProyectos.innerHTML = "";
+
+        if (proyectos.length === 0) {
+            tablaProyectos.innerHTML = `<tr><td colspan="7" style="text-align:center;">No hay proyectos registrados</td></tr>`;
+            return;
+        }
+
+        proyectos.forEach((proyecto) => {
+            const fila = document.createElement("tr");
+            fila.innerHTML = `
+                <td>${proyecto.id}</td>
+                <td>${proyecto.nombre}</td>
+                <td>${proyecto.descripcion || "—"}</td>
+                <td>₡${Number(proyecto.presupuesto).toLocaleString()}</td>
+                <td>${proyecto.fechaInicio}</td>
+                <td>${proyecto.estado}</td>
+                <td class="acciones">
+                    <button class="btn btn-editar btn-editar-proyecto" data-id="${proyecto.id}">Editar</button>
+                    <button class="btn btn-eliminar btn-eliminar-proyecto" data-id="${proyecto.id}">Eliminar</button>
+                </td>
+            `;
+            tablaProyectos.appendChild(fila);
+        });
+
+        const botonesEditar = document.querySelectorAll(".btn-editar-proyecto");
+        botonesEditar.forEach((btn) => {
+            btn.addEventListener("click", () => {
+                editarProyectoHandler(btn.dataset.id);
+            });
+        });
+
+        const botonesEliminar = document.querySelectorAll(".btn-eliminar-proyecto");
+        botonesEliminar.forEach((btn) => {
+            btn.addEventListener("click", () => {
+                eliminarProyectoHandler(btn.dataset.id);
+            });
+        });
+
+    } catch (error) {
+        alert("Error al cargar proyectos: " + error.message);
+    }
+}
+
+function limpiarFormularioProyecto() {
+    proyNombre.value = "";
+    proyDescripcion.value = "";
+    proyPresupuesto.value = "";
+    proyFechaInicio.value = "";
+    proyEstado.value = "Planificación";
+    proyectoEditandoId = null;
+    tituloFormProyecto.textContent = "Crear Proyecto";
+    btnCrearProyecto.textContent = "Guardar Proyecto";
+    btnCancelarProyecto.style.display = "none";
+}
+
+btnCrearProyecto.addEventListener("click", async () => {
+    if (!proyNombre.value || !proyPresupuesto.value || !proyFechaInicio.value) {
+        alert("Nombre, presupuesto y fecha de inicio son obligatorios.");
+        return;
+    }
+
+    const data = {
+        nombre: proyNombre.value,
+        descripcion: proyDescripcion.value,
+        presupuesto: proyPresupuesto.value,
+        fechaInicio: proyFechaInicio.value,
+        estado: proyEstado.value
+    };
+
+    try {
+        if (proyectoEditandoId) {
+            await actualizarProyecto(proyectoEditandoId, data);
+            alert("Proyecto actualizado correctamente");
+        } else {
+            await crearProyecto(data);
+            alert("Proyecto creado correctamente");
+        }
+        limpiarFormularioProyecto();
+        cargarProyectos();
+    } catch (error) {
+        alert("Error: " + error.message);
+    }
+});
+
+async function editarProyectoHandler(id) {
+    try {
+        const proyectos = await obtenerProyectos();
+        const proyecto = proyectos.find((p) => String(p.id) === String(id));
+
+        if (!proyecto) {
+            alert("Proyecto no encontrado");
+            return;
+        }
+
+        proyNombre.value = proyecto.nombre;
+        proyDescripcion.value = proyecto.descripcion || "";
+        proyPresupuesto.value = proyecto.presupuesto;
+        proyFechaInicio.value = proyecto.fechaInicio;
+        proyEstado.value = proyecto.estado;
+
+        proyectoEditandoId = id;
+        tituloFormProyecto.textContent = "Editar Proyecto";
+        btnCrearProyecto.textContent = "Actualizar Proyecto";
+        btnCancelarProyecto.style.display = "inline-block";
+    } catch (error) {
+        alert("Error al cargar proyecto: " + error.message);
+    }
+}
+
+async function eliminarProyectoHandler(id) {
+    const confirmar = confirm("¿Estás seguro de que deseas eliminar este proyecto?");
+    if (!confirmar) return;
+
+    try {
+        await eliminarProyecto(id);
+        alert("Proyecto eliminado correctamente");
+        cargarProyectos();
+    } catch (error) {
+        alert("Error al eliminar: " + error.message);
+    }
+}
+
+btnCancelarProyecto.addEventListener("click", () => {
+    limpiarFormularioProyecto();
+});
+
+// MÓDULO SERVICIOS
+
+async function cargarServicios() {
+    try {
+        const servicios = await obtenerServicios();
+        tablaServicios.innerHTML = "";
+
+        if (servicios.length === 0) {
+            tablaServicios.innerHTML = `<tr><td colspan="6" style="text-align:center;">No hay servicios registrados</td></tr>`;
+            return;
+        }
+
+        servicios.forEach((servicio) => {
+            const fila = document.createElement("tr");
+            fila.innerHTML = `
+                <td>${servicio.id}</td>
+                <td>${servicio.tipo}</td>
+                <td>${servicio.descripcion || "—"}</td>
+                <td>${servicio.responsable}</td>
+                <td>${servicio.estado}</td>
+                <td class="acciones">
+                    <button class="btn btn-editar btn-editar-servicio" data-id="${servicio.id}">Editar</button>
+                    <button class="btn btn-eliminar btn-eliminar-servicio" data-id="${servicio.id}">Eliminar</button>
+                </td>
+            `;
+            tablaServicios.appendChild(fila);
+        });
+
+        const botonesEditar = document.querySelectorAll(".btn-editar-servicio");
+        botonesEditar.forEach((btn) => {
+            btn.addEventListener("click", () => {
+                editarServicioHandler(btn.dataset.id);
+            });
+        });
+
+        const botonesEliminar = document.querySelectorAll(".btn-eliminar-servicio");
+        botonesEliminar.forEach((btn) => {
+            btn.addEventListener("click", () => {
+                eliminarServicioHandler(btn.dataset.id);
+            });
+        });
+
+    } catch (error) {
+        alert("Error al cargar servicios: " + error.message);
+    }
+}
+
+function limpiarFormularioServicio() {
+    servTipo.value = "";
+    servDescripcion.value = "";
+    servResponsable.value = "";
+    servEstado.value = "Activo";
+    servicioEditandoId = null;
+    tituloFormServicio.textContent = "Crear Servicio";
+    btnCrearServicio.textContent = "Guardar Servicio";
+    btnCancelarServicio.style.display = "none";
+}
+
+btnCrearServicio.addEventListener("click", async () => {
+    if (!servTipo.value || !servDescripcion.value || !servResponsable.value) {
+        alert("Tipo, descripción y responsable son obligatorios.");
+        return;
+    }
+
+    const data = {
+        tipo: servTipo.value,
+        descripcion: servDescripcion.value,
+        responsable: servResponsable.value,
+        estado: servEstado.value
+    };
+
+    try {
+        if (servicioEditandoId) {
+            await actualizarServicio(servicioEditandoId, data);
+            alert("Servicio actualizado correctamente");
+        } else {
+            await crearServicio(data);
+            alert("Servicio creado correctamente");
+        }
+        limpiarFormularioServicio();
+        cargarServicios();
+    } catch (error) {
+        alert("Error: " + error.message);
+    }
+});
+
+async function editarServicioHandler(id) {
+    try {
+        const servicios = await obtenerServicios();
+        const servicio = servicios.find((s) => String(s.id) === String(id));
+
+        if (!servicio) {
+            alert("Servicio no encontrado");
+            return;
+        }
+
+        servTipo.value = servicio.tipo;
+        servDescripcion.value = servicio.descripcion || "";
+        servResponsable.value = servicio.responsable;
+        servEstado.value = servicio.estado;
+
+        servicioEditandoId = id;
+        tituloFormServicio.textContent = "Editar Servicio";
+        btnCrearServicio.textContent = "Actualizar Servicio";
+        btnCancelarServicio.style.display = "inline-block";
+    } catch (error) {
+        alert("Error al cargar servicio: " + error.message);
+    }
+}
+
+async function eliminarServicioHandler(id) {
+    const confirmar = confirm("¿Estás seguro de que deseas eliminar este servicio?");
+    if (!confirmar) return;
+
+    try {
+        await eliminarServicio(id);
+        alert("Servicio eliminado correctamente");
+        cargarServicios();
+    } catch (error) {
+        alert("Error al eliminar: " + error.message);
+    }
+}
+
+btnCancelarServicio.addEventListener("click", () => {
+    limpiarFormularioServicio();
+});
+
+// Inicialización
+cargarReportes();
