@@ -1,34 +1,69 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>home</title>
+    <title>Municipalidad de Escazú</title>
+
 </head>
+
 <body>
-    <h1>Escasu contigo</h1>
+
+
     <nav>
+        <h2>Escazú Contigo</h2>
         <ul>
-            <li><a href="../pages/login.html">login</a></li>
-            <li></li>
-            <li></li>
+            <li><a href="../pages/home.html">Inicio</a></li>
+            <li><a href="../pages/user.html">Mis Reportes</a></li>
+            <li><a href="../pages/login.html">Login</a></li>
+            <li><a href="../pages/registrar.html">Registro</a></li>
         </ul>
     </nav>
 
+    <div class="hero">
+        <h1>Municipalidad de Escazú</h1>
+        <p>La Municipalidad de Escazú trabaja con compromiso, transparencia y responsabilidad para mejorar la calidad de
+            vida de todos los habitantes del cantón. Esta plataforma permite reportar situaciones que requieran atención
+            municipal de manera rápida y sencilla.</p>
+    </div>
 
+    <div class="seccion">
+        <h2> Proyectos Viales</h2>
+        <div class="tarjetas" id="contenedorProyectos">
+            <p class="mensajeVacio">Cargando proyectos...</p>
+        </div>
+    </div>
 
-    <h1>bienvenidos</h1>
+    <div class="seccion">
+        <h2> Servicios Públicos</h2>
+        <div class="tarjetas" id="contenedorServicios">
+            <p class="mensajeVacio">Cargando servicios...</p>
+        </div>
+    </div>
 
-    <p>La Municipalidad de Escazú trabaja con compromiso, transparencia y responsabilidad para mejorar la calidad de vida de todos los habitantes del cantón. Nuestro objetivo es impulsar el desarrollo sostenible, fortalecer la participación ciudadana y promover el bienestar social, económico y ambiental.</p>
+    <div class="seccion">
+        <h2>Hacer un Reporte</h2>
+        <div class="crearReporte">
+            <select id="reporteTipo">
+                <option value="">-- Seleccionar tipo de reporte --</option>
+                <option value="Bache">Bache</option>
+                <option value="Alumbrado">Alumbrado</option>
+                <option value="Basura">Basura</option>
+                <option value="Alcantarillado">Alcantarillado</option>
+                <option value="Otro">Otro</option>
+            </select>
+            <textarea id="reporteDescripcion" placeholder="Descripción del problema"></textarea>
+            <input type="text" id="reporteUbicacion" placeholder="Ubicación (ej: Calle 5, Barrio San Rafael)">
+            <button id="btnEnviarReporte">Enviar Reporte</button>
+        </div>
+    </div>
+<hr>
+    <footer>
+        <p>© 2026 Municipalidad de Escazú — Todos los derechos reservados</p>
+    </footer>
 
-
-    <h1>objetivo</h1>
-    <p>Brindar servicios municipales eficientes y transparentes que promuevan el desarrollo integral del cantón y el bienestar de sus habitantes.</p>
-
-    <h1>brindamos esta pagina para</h1>
-    <p>La Municipalidad de Escazú pone a disposición de la ciudadanía una Plataforma Digital de Reportes Comunitarios, diseñada para facilitar la comunicación directa entre los vecinos y el gobierno local.
-
-Este sistema permite a los habitantes del cantón reportar de manera rápida, sencilla y segura cualquier situación que requiera atención municipal.</p>
-    <script src="../js/home.js"></script>
+    <script src="../js/home.js" type="module"></script>
 </body>
+
 </html>

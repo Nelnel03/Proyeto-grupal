@@ -9,7 +9,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "server": "json-server --watch ../baseDatos.json",
+    "server": "json-server --watch baseDatos.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
