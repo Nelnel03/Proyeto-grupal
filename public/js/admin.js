@@ -128,7 +128,11 @@ async function cargarReportes() {
         });
 
     } catch (error) {
-        alert("Error al cargar reportes: " + error.message);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Error al cargar reportes: ' + error.message
+        });
     }
 }
 
@@ -143,17 +147,31 @@ async function verDetalleReporte(id) {
         detalleFecha.textContent = reporte.fecha;
         modalDetalle.classList.add("visible");
     } catch (error) {
-        alert("Error al obtener detalle: " + error.message);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Error al obtener detalle: ' + error.message
+        });
     }
 }
 
 async function actualizarEstadoReporte(id, nuevoEstado) {
     try {
         await actualizarReporte(id, { estado: nuevoEstado });
-        alert("Estado del reporte actualizado a: " + nuevoEstado);
+        Swal.fire({
+            icon: 'success',
+            title: 'Actualizado',
+            text: "Estado del reporte actualizado a: " + nuevoEstado,
+            timer: 2000,
+            showConfirmButton: false
+        });
         cargarReportes();
     } catch (error) {
-        alert("Error al actualizar estado: " + error.message);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Error al actualizar estado: ' + error.message
+        });
     }
 }
 
@@ -205,7 +223,11 @@ async function cargarProyectos() {
         });
 
     } catch (error) {
-        alert("Error al cargar proyectos: " + error.message);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Error al cargar proyectos: ' + error.message
+        });
     }
 }
 
@@ -223,7 +245,11 @@ function limpiarFormularioProyecto() {
 
 btnCrearProyecto.addEventListener("click", async () => {
     if (!proyNombre.value || !proyPresupuesto.value || !proyFechaInicio.value) {
-        alert("Nombre, presupuesto y fecha de inicio son obligatorios.");
+        Swal.fire({
+            icon: 'warning',
+            title: 'Campos requeridos',
+            text: "Nombre, presupuesto y fecha de inicio son obligatorios."
+        });
         return;
     }
 
@@ -238,15 +264,31 @@ btnCrearProyecto.addEventListener("click", async () => {
     try {
         if (proyectoEditandoId) {
             await actualizarProyecto(proyectoEditandoId, data);
-            alert("Proyecto actualizado correctamente");
+            Swal.fire({
+                icon: 'success',
+                title: 'Éxito',
+                text: "Proyecto actualizado correctamente",
+                timer: 2000,
+                showConfirmButton: false
+            });
         } else {
             await crearProyecto(data);
-            alert("Proyecto creado correctamente");
+            Swal.fire({
+                icon: 'success',
+                title: 'Éxito',
+                text: "Proyecto creado correctamente",
+                timer: 2000,
+                showConfirmButton: false
+            });
         }
         limpiarFormularioProyecto();
         cargarProyectos();
     } catch (error) {
-        alert("Error: " + error.message);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: error.message
+        });
     }
 });
 
@@ -256,7 +298,11 @@ async function editarProyectoHandler(id) {
         const proyecto = proyectos.find((p) => String(p.id) === String(id));
 
         if (!proyecto) {
-            alert("Proyecto no encontrado");
+            Swal.fire({
+                icon: 'error',
+                title: 'No encontrado',
+                text: "Proyecto no encontrado"
+            });
             return;
         }
 
@@ -271,21 +317,45 @@ async function editarProyectoHandler(id) {
         btnCrearProyecto.textContent = "Actualizar Proyecto";
         btnCancelarProyecto.style.display = "inline-block";
     } catch (error) {
-        alert("Error al cargar proyecto: " + error.message);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Error al cargar proyecto: ' + error.message
+        });
     }
 }
 
 async function eliminarProyectoHandler(id) {
-    const confirmar = confirm("¿Estás seguro de que deseas eliminar este proyecto?");
-    if (!confirmar) return;
-
-    try {
-        await eliminarProyecto(id);
-        alert("Proyecto eliminado correctamente");
-        cargarProyectos();
-    } catch (error) {
-        alert("Error al eliminar: " + error.message);
-    }
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: "¿Estás seguro de que deseas eliminar este proyecto?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar'
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+            try {
+                await eliminarProyecto(id);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Eliminado',
+                    text: 'Proyecto eliminado correctamente',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+                cargarProyectos();
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Error al eliminar: ' + error.message
+                });
+            }
+        }
+    });
 }
 
 btnCancelarProyecto.addEventListener("click", () => {
@@ -335,7 +405,11 @@ async function cargarServicios() {
         });
 
     } catch (error) {
-        alert("Error al cargar servicios: " + error.message);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Error al cargar servicios: ' + error.message
+        });
     }
 }
 
@@ -352,7 +426,11 @@ function limpiarFormularioServicio() {
 
 btnCrearServicio.addEventListener("click", async () => {
     if (!servTipo.value || !servDescripcion.value || !servResponsable.value) {
-        alert("Tipo, descripción y responsable son obligatorios.");
+        Swal.fire({
+            icon: 'warning',
+            title: 'Campos requeridos',
+            text: "Tipo, descripción y responsable son obligatorios."
+        });
         return;
     }
 
@@ -366,15 +444,31 @@ btnCrearServicio.addEventListener("click", async () => {
     try {
         if (servicioEditandoId) {
             await actualizarServicio(servicioEditandoId, data);
-            alert("Servicio actualizado correctamente");
+            Swal.fire({
+                icon: 'success',
+                title: 'Éxito',
+                text: "Servicio actualizado correctamente",
+                timer: 2000,
+                showConfirmButton: false
+            });
         } else {
             await crearServicio(data);
-            alert("Servicio creado correctamente");
+            Swal.fire({
+                icon: 'success',
+                title: 'Éxito',
+                text: "Servicio creado correctamente",
+                timer: 2000,
+                showConfirmButton: false
+            });
         }
         limpiarFormularioServicio();
         cargarServicios();
     } catch (error) {
-        alert("Error: " + error.message);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: error.message
+        });
     }
 });
 
@@ -384,7 +478,11 @@ async function editarServicioHandler(id) {
         const servicio = servicios.find((s) => String(s.id) === String(id));
 
         if (!servicio) {
-            alert("Servicio no encontrado");
+            Swal.fire({
+                icon: 'error',
+                title: 'No encontrado',
+                text: "Servicio no encontrado"
+            });
             return;
         }
 
@@ -398,21 +496,45 @@ async function editarServicioHandler(id) {
         btnCrearServicio.textContent = "Actualizar Servicio";
         btnCancelarServicio.style.display = "inline-block";
     } catch (error) {
-        alert("Error al cargar servicio: " + error.message);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Error al cargar servicio: ' + error.message
+        });
     }
 }
 
 async function eliminarServicioHandler(id) {
-    const confirmar = confirm("¿Estás seguro de que deseas eliminar este servicio?");
-    if (!confirmar) return;
-
-    try {
-        await eliminarServicio(id);
-        alert("Servicio eliminado correctamente");
-        cargarServicios();
-    } catch (error) {
-        alert("Error al eliminar: " + error.message);
-    }
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: "¿Estás seguro de que deseas eliminar este servicio?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar'
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+            try {
+                await eliminarServicio(id);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Eliminado',
+                    text: 'Servicio eliminado correctamente',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+                cargarServicios();
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Error al eliminar: ' + error.message
+                });
+            }
+        }
+    });
 }
 
 btnCancelarServicio.addEventListener("click", () => {

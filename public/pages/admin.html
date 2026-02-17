@@ -6,22 +6,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - Dashboard</title>
 
-
+    <link rel="stylesheet" href="../styles/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
+
+    <div class="nav">
+        <div class="nav-header">
+            <img src="../imgs/descarga.png" alt="Logo Municipalidad" class="nav-logo">
+            <h1>Municipalidad de Puntarenas</h1>
+        </div>
+        <ul class="nav-links">
+            <li><a href="../pages/home.html">Inicio</a></li>
+            <li><a href="../pages/usuarioIniciado.html">Reportar</a></li>
+        </ul>
+    </div>
 
     <aside class="sidebar">
         <h2>Panel Admin</h2>
         <button id="btnMenuReportes" class="active">Gestión de Reportes</button>
         <button id="btnMenuProyectos">Gestión de Proyectos Viales</button>
         <button id="btnMenuServicios">Gestión de Servicios Públicos</button>
-        <a href="../pages/home.html" class="btn-home">Volver al Home</a>
+        <a href="../pages/homeAdmin.html" class="btn-home">Volver al Home</a>
     </aside>
 
     <div class="main">
 
         <section id="seccionReportes" class="seccion activa">
+            <hr>
             <h1>Gestión de Reportes</h1>
             <table>
                 <thead>
@@ -41,6 +54,7 @@
         </section>
 
         <section id="seccionProyectos" class="seccion">
+            <hr>
             <h1>Gestión de Proyectos Viales</h1>
 
             <div class="formulario">
@@ -59,7 +73,7 @@
                     <button id="btnCancelarProyecto" class="btn btnCancelar" style="display:none;">Cancelar</button>
                 </div>
             </div>
-
+            <hr>
             <table>
                 <thead>
                     <tr>
@@ -77,6 +91,7 @@
             </table>
         </section>
         <section id="seccionServicios" class="seccion">
+            <hr>
             <h1>Gestión de Servicios Públicos</h1>
 
             <div class="formulario">
@@ -94,7 +109,7 @@
                     <button id="btnCancelarServicio" class="btn btn-cancelar" style="display:none;">Cancelar</button>
                 </div>
             </div>
-
+            <hr>
             <table>
                 <thead>
                     <tr>
@@ -116,6 +131,7 @@
     <div id="modalDetalle" class="modal-fondo">
         <div class="modal-contenido">
             <h3>Detalle del Reporte</h3>
+            <hr>
             <p><strong>ID:</strong> <span id="detalleId"></span></p>
             <p><strong>Tipo:</strong> <span id="detalleTipo"></span></p>
             <p><strong>Descripción:</strong> <span id="detalleDescripcion"></span></p>
@@ -125,6 +141,10 @@
             <button id="btnCerrarModal" class="btn btn-cancelar">Cerrar</button>
         </div>
     </div>
+
+    <footer>
+        <p>© 2026 Municipalidad de Puntarenas — Todos los derechos reservados</p>
+    </footer>
 
     <script src="../js/admin.js" type="module"></script>
 </body>

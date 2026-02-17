@@ -1,12 +1,13 @@
 {
   "reportes": [
     {
-      "id": "e20f",
-      "tipo": "Alcantarillado",
-      "descripcion": "wswbhwsbwhbs",
-      "ubicacion": "swbwhsbwhsjw",
+      "id": "b390",
+      "tipo": "Bache",
+      "descripcion": "Un bache demasiado profundio en el que peligran tanto niños como autos",
+      "ubicacion": "Barranca Centro calle 5 avenida 8",
       "estado": "Resuelto",
-      "fecha": "17/2/2026"
+      "fecha": "17/2/2026",
+      "usuarioId": "99bd"
     }
   ],
   "usuarios": [
@@ -33,6 +34,30 @@
       "correo": "AAAAA",
       "password": "AAAAA",
       "telefono": "111111111"
+    },
+    {
+      "id": "0d50",
+      "nombre": "Brandon",
+      "apellido": "Chavarria",
+      "correo": "bchava@gmail.com",
+      "password": "11112222",
+      "telefono": "62355532"
+    },
+    {
+      "id": "50f7",
+      "nombre": "Brandon",
+      "apellido": "Chavarria",
+      "correo": "bchavarriaafwdgmail.com",
+      "password": "11221122",
+      "telefono": "12345432"
+    },
+    {
+      "id": "99bd",
+      "nombre": "Brandon",
+      "apellido": "Chavarria",
+      "correo": "fwd@gmail.com",
+      "password": "11221122",
+      "telefono": "12324321"
     }
   ],
   "administradores": [
@@ -61,5 +86,9 @@
       "responsable": "Unamu",
       "estado": "Activo"
     }
-  ]
+  ],
+  "sesionActiva": {
+    "usuarioId": "adm1",
+    "rol": "admin"
+  }
 }
