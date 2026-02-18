@@ -46,6 +46,17 @@ btnEnviar.addEventListener("click", async () => {
         return;
     }
 
+    const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (!emailRegex.test(data.correo.toLowerCase())) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Correo Inválido',
+            text: 'La dirección de correo electrónico no es válida.',
+            confirmButtonColor: '#d33'
+        });
+        return;
+    }
+
     try {
         await enviarMensaje(data);
 
