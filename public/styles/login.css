@@ -37,3 +37,21 @@
     color: var(--primary-color);
     font-weight: bold;
 }
+
+/* Logo corner for auth pages */
+.logo-corner {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 100;
+}
+
+.logo-corner img {
+    width: 80px;
+    height: auto;
+    transition: transform 0.3s ease;
+}
+
+.logo-corner img:hover {
+    transform: scale(1.1);
+}
