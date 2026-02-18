@@ -35,3 +35,47 @@
     cursor: pointer;
     font-weight: bold;
 }
+
+/* Consultas */
+.mis-consultas {
+    margin-top: 30px;
+}
+
+.mis-consultas h2 {
+    color: var(--secondary-color);
+    margin-bottom: 15px;
+}
+
+.tarjeta-consulta {
+    background: #f8f9fa;
+    border-left: 5px solid #ff8c00;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    position: relative;
+}
+
+.consulta-fecha {
+    font-size: 0.85rem;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.respuesta-admin {
+    margin-top: 15px;
+    padding: 15px;
+    background: #e9ecef;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+}
+
+.respuesta-admin strong {
+    color: #ff8c00;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.estado-pendiente {
+    color: #6c757d;
+    font-size: 0.9rem;
+}

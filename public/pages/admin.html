@@ -19,8 +19,7 @@
             <h1>Municipalidad de Puntarenas</h1>
         </div>
         <ul class="nav-links">
-            <li><a href="../pages/admin.html">Inicio</a></li>
-            <li><a href="../pages/usuarioIniciado.html">Reportar</a></li>
+            <li><a href="../pages/home.html">Inicio</a></li>
         </ul>
     </div>
 
@@ -30,9 +29,29 @@
         <button id="btnMenuProyectos">Gestión de Proyectos Viales</button>
         <button id="btnMenuServicios">Gestión de Servicios Públicos</button>
         <button id="btnMenuMensajes">Mensajes de Contacto</button>
+        <button id="btnMenuUsuarios">Gestión de Usuarios</button>
     </aside>
 
     <div class="main">
+
+        <section id="seccionUsuarios" class="seccion">
+            <hr>
+            <h1>Gestión de Usuarios</h1>
+            <p>Administra los ciudadanos registrados y otórgales permisos de administrador si es necesario.</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Correo</th>
+                        <th>Teléfono</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaUsuarios">
+                </tbody>
+            </table>
+        </section>
 
         <section id="seccionReportes" class="seccion activa">
             <hr>
@@ -139,6 +158,7 @@
                         <th>Cédula</th>
                         <th>Correo</th>
                         <th>Comentario</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody id="tablaMensajes">

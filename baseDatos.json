@@ -8,6 +8,15 @@
       "estado": "Resuelto",
       "fecha": "17/2/2026",
       "usuarioId": "99bd"
+    },
+    {
+      "id": "1b71",
+      "tipo": "Alumbrado",
+      "descripcion": "se fue la fucking luz",
+      "ubicacion": "calle san joaquin de santo tomas de san rafael",
+      "estado": "pendiente",
+      "fecha": "18/2/2026",
+      "usuarioId": "a43b"
     }
   ],
   "usuarios": [
@@ -58,6 +67,14 @@
       "correo": "fwd@gmail.com",
       "password": "11221122",
       "telefono": "12324321"
+    },
+    {
+      "id": "a43b",
+      "nombre": "Nana",
+      "apellido": "Hachiko",
+      "correo": "nana@gmail.com",
+      "password": "12345",
+      "telefono": "26364025"
     }
   ],
   "administradores": [
@@ -109,6 +126,26 @@
       "correo": "bchavarriaafwd@gmail.com",
       "comentario": "me defeco en randall chavarria",
       "fecha": "17/2/2026"
+    },
+    {
+      "id": "edac",
+      "nombre": "jnasdsnjas",
+      "apellido": "sqdkjlqdnisw",
+      "cedula": "qdaiodjioqwj",
+      "correo": "qwdwqiodhioqw",
+      "comentario": "qwdjoqwdiwqj",
+      "fecha": "18/2/2026"
+    },
+    {
+      "id": "d795",
+      "nombre": "pepito",
+      "apellido": "djajodsd",
+      "cedula": "212941784",
+      "correo": "nana@gmail,com",
+      "comentario": "qwjndqsijdqw",
+      "fecha": "18/2/2026",
+      "usuarioId": "a43b",
+      "respuesta": "no xd"
     }
   ]
 }

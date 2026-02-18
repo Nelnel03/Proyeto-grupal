@@ -71,4 +71,21 @@ function obtenerUsuarioPorId(id) {
     return getDatosPorId(endpoint, id);
 }
 
-export { obtenerUsuarios, registrarUsuario, iniciarSesion, obtenerSesionActiva, cerrarSesion, obtenerUsuarioPorId };
+async function promoverAdmin(usuario) {
+    const response = await fetch("http://localhost:3000/administradores", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            id: `adm-${usuario.id}`,
+            nombre: usuario.nombre,
+            correo: usuario.correo,
+            password: usuario.password
+        })
+    });
+    if (!response.ok) {
+        throw new Error("Error al promover usuario a administrador");
+    }
+    return await response.json();
+}
+
+export { obtenerUsuarios, registrarUsuario, iniciarSesion, obtenerSesionActiva, cerrarSesion, obtenerUsuarioPorId, promoverAdmin };

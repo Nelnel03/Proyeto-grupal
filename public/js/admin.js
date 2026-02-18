@@ -4,21 +4,25 @@
 import { obtenerReportes, obtenerReportePorId, actualizarReporte } from "../services/servicesReportes.js";
 import { obtenerProyectos, crearProyecto, actualizarProyecto, eliminarProyecto } from "../services/servicesProyectos.js";
 import { obtenerServicios, crearServicio, actualizarServicio, eliminarServicio } from "../services/servicesServicios.js";
-import { obtenerMensajes } from "../services/servicesContacto.js";
+import { obtenerMensajes, actualizarMensaje } from "../services/servicesContacto.js";
+import { obtenerUsuarios, promoverAdmin } from "../services/servicesUsuarios.js";
+import { obtenerAdmins } from "../services/servicesAdmin.js";
 
 // Referencias DOM - Navegación
 const btnMenuReportes = document.getElementById("btnMenuReportes");
 const btnMenuProyectos = document.getElementById("btnMenuProyectos");
 const btnMenuServicios = document.getElementById("btnMenuServicios");
 const btnMenuMensajes = document.getElementById("btnMenuMensajes");
+const btnMenuUsuarios = document.getElementById("btnMenuUsuarios");
 
 const seccionReportes = document.getElementById("seccionReportes");
 const seccionProyectos = document.getElementById("seccionProyectos");
 const seccionServicios = document.getElementById("seccionServicios");
 const seccionMensajes = document.getElementById("seccionMensajes");
+const seccionUsuarios = document.getElementById("seccionUsuarios");
 
-const secciones = [seccionReportes, seccionProyectos, seccionServicios, seccionMensajes];
-const botonesMenu = [btnMenuReportes, btnMenuProyectos, btnMenuServicios, btnMenuMensajes];
+const secciones = [seccionReportes, seccionProyectos, seccionServicios, seccionMensajes, seccionUsuarios];
+const botonesMenu = [btnMenuReportes, btnMenuProyectos, btnMenuServicios, btnMenuMensajes, btnMenuUsuarios];
 
 // Referencias DOM - Reportes
 const tablaReportes = document.getElementById("tablaReportes");
@@ -55,6 +59,9 @@ const tituloFormServicio = document.getElementById("tituloFormServicio");
 // Referencias DOM - Mensajes
 const tablaMensajes = document.getElementById("tablaMensajes");
 
+// Referencias DOM - Usuarios
+const tablaUsuarios = document.getElementById("tablaUsuarios");
+
 // Estado de edición
 let proyectoEditandoId = null;
 let servicioEditandoId = null;
@@ -86,6 +93,11 @@ btnMenuServicios.addEventListener("click", () => {
 btnMenuMensajes.addEventListener("click", () => {
     mostrarSeccion(3);
     cargarMensajes();
+});
+
+btnMenuUsuarios.addEventListener("click", () => {
+    mostrarSeccion(4);
+    cargarUsuarios();
 });
 
 // MÓDULO REPORTES
@@ -572,9 +584,24 @@ async function cargarMensajes() {
                 <td>${msg.nombre} ${msg.apellido}</td>
                 <td>${msg.cedula}</td>
                 <td>${msg.correo}</td>
-                <td>${msg.comentario}</td>
+                <td>
+                    <div class="mensaje-texto">${msg.comentario}</div>
+                    ${msg.respuesta ? `<div class="respuesta-admin"><strong>Respuesta:</strong> ${msg.respuesta}</div>` : ""}
+                </td>
+                <td class="acciones">
+                    <button class="btn btn-actualizar btn-responder-mensaje" data-id="${msg.id}">
+                        ${msg.respuesta ? "Editar Respuesta" : "Responder"}
+                    </button>
+                </td>
             `;
             tablaMensajes.appendChild(fila);
+        });
+
+        const botonesResponder = document.querySelectorAll(".btn-responder-mensaje");
+        botonesResponder.forEach((btn) => {
+            btn.addEventListener("click", () => {
+                responderMensaje(btn.dataset.id);
+            });
         });
 
     } catch (error) {
@@ -584,6 +611,128 @@ async function cargarMensajes() {
             text: 'Error al cargar mensajes: ' + error.message
         });
     }
+}
+
+async function responderMensaje(id) {
+    try {
+        const mensajes = await obtenerMensajes();
+        const mensaje = mensajes.find(m => String(m.id) === String(id));
+
+        const { value: respuesta } = await Swal.fire({
+            title: 'Responder Mensaje',
+            input: 'textarea',
+            inputLabel: `Responder a ${mensaje.nombre}`,
+            inputValue: mensaje.respuesta || "",
+            inputPlaceholder: 'Escribe tu respuesta aquí...',
+            showCancelButton: true,
+            confirmButtonColor: '#ff8c00',
+            confirmButtonText: 'Enviar Respuesta',
+            cancelButtonText: 'Cancelar'
+        });
+
+        if (respuesta) {
+            await actualizarMensaje(id, { respuesta: respuesta });
+            Swal.fire({
+                icon: 'success',
+                title: 'Respuesta Enviada',
+                text: 'El ciudadano podrá ver esta respuesta en su perfil.',
+                timer: 2000,
+                showConfirmButton: false
+            });
+            cargarMensajes();
+        }
+    } catch (error) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Error al responder: ' + error.message
+        });
+    }
+}
+
+// MÓDULO USUARIOS
+
+async function cargarUsuarios() {
+    try {
+        const usuarios = await obtenerUsuarios();
+        const admins = await obtenerAdmins();
+        tablaUsuarios.innerHTML = "";
+
+        if (usuarios.length === 0) {
+            tablaUsuarios.innerHTML = `<tr><td colspan="5" style="text-align:center;">No hay usuarios registrados</td></tr>`;
+            return;
+        }
+
+        usuarios.forEach((user) => {
+            const esAdmin = admins.some(a => a.correo === user.correo);
+            const fila = document.createElement("tr");
+            fila.innerHTML = `
+                <td>${user.id}</td>
+                <td>${user.nombre} ${user.apellido}</td>
+                <td>${user.correo}</td>
+                <td>${user.telefono}</td>
+                <td class="acciones">
+                    ${esAdmin
+                    ? '<span class="estado-badge estado-resuelto">Administrador</span>'
+                    : `<button class="btn btn-actualizar btn-promover-user" data-id="${user.id}">Promover a Admin</button>`
+                }
+                </td>
+            `;
+            tablaUsuarios.appendChild(fila);
+        });
+
+        const botonesPromover = document.querySelectorAll(".btn-promover-user");
+        botonesPromover.forEach((btn) => {
+            btn.addEventListener("click", () => {
+                promoverUsuario(btn.dataset.id);
+            });
+        });
+
+    } catch (error) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Error al cargar usuarios: ' + error.message
+        });
+    }
+}
+
+async function promoverUsuario(id) {
+    Swal.fire({
+        title: '¿Promover a Administrador?',
+        text: "¿Estás seguro de que deseas otorgar permisos de administrador a este usuario?",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#ff8c00',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, promover',
+        cancelButtonText: 'Cancelar'
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+            try {
+                const usuarios = await obtenerUsuarios();
+                const usuario = usuarios.find(u => String(u.id) === String(id));
+
+                if (usuario) {
+                    await promoverAdmin(usuario);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Éxito',
+                        text: `${usuario.nombre} ahora es administrador.`,
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                    cargarUsuarios();
+                }
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: error.message
+                });
+            }
+        }
+    });
 }
 
 // Inicialización

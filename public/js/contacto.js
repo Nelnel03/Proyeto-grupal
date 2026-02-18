@@ -32,8 +32,19 @@ btnEnviar.addEventListener("click", async () => {
         cedula: cedulaInput.value.trim(),
         correo: correoInput.value.trim(),
         comentario: comentarioInput.value.trim(),
-        fecha: new Date().toLocaleDateString()
+        fecha: new Date().toLocaleDateString(),
+        usuarioId: sesion.usuarioId
     };
+
+    if (!data.nombre || !data.apellido || !data.cedula || !data.correo || !data.comentario) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Campos Incompletos',
+            text: 'Por favor, completa todos los espacios del formulario.',
+            confirmButtonColor: '#ff8c00'
+        });
+        return;
+    }
 
     try {
         await enviarMensaje(data);

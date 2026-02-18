@@ -1,11 +1,12 @@
 import { obtenerSesionActiva, obtenerUsuarioPorId, cerrarSesion } from "../services/servicesUsuarios.js";
 import { obtenerReportes } from "../services/servicesReportes.js";
+import { obtenerMensajes } from "../services/servicesContacto.js";
 
 const nombreUsuario = document.getElementById("nombreUsuario");
 const correoUsuario = document.getElementById("correoUsuario");
 const telefonoUsuario = document.getElementById("telefonoUsuario");
 const contenedorReportes = document.getElementById("contenedorReportes");
-const btnCerrarSesion = document.getElementById("btnCerrarSesion");
+const contenedorConsultas = document.getElementById("contenedorConsultas");
 
 async function cargarPerfil() {
     try {
@@ -44,21 +45,47 @@ async function cargarPerfil() {
 
         if (misReportes.length === 0) {
             contenedorReportes.innerHTML = "<p>No has realizado ningún reporte.</p>";
-            return;
+        } else {
+            misReportes.forEach(reporte => {
+                const div = document.createElement("div");
+                div.className = "tarjeta-reporte";
+                div.innerHTML = `
+                    <h3>${reporte.tipo}</h3>
+                    <p><strong>Descripción:</strong> ${reporte.descripcion}</p>
+                    <p><strong>Ubicación:</strong> ${reporte.ubicacion}</p>
+                    <p><strong>Estado:</strong> <span class="estado-${(reporte.estado || "pendiente").toLowerCase()}">${reporte.estado || "Pendiente"}</span></p>
+                    <p><small>Fecha: ${reporte.fecha}</small></p>
+                `;
+                contenedorReportes.appendChild(div);
+            });
         }
 
-        misReportes.forEach(reporte => {
-            const div = document.createElement("div");
-            div.className = "tarjeta-reporte";
-            div.innerHTML = `
-                <h3>${reporte.tipo}</h3>
-                <p><strong>Descripción:</strong> ${reporte.descripcion}</p>
-                <p><strong>Ubicación:</strong> ${reporte.ubicacion}</p>
-                <p><strong>Estado:</strong> <span class="estado-${(reporte.estado || "pendiente").toLowerCase()}">${reporte.estado || "Pendiente"}</span></p>
-                <p><small>Fecha: ${reporte.fecha}</small></p>
-            `;
-            contenedorReportes.appendChild(div);
-        });
+        // CARGAR CONSULTAS
+        const mensajes = await obtenerMensajes();
+        const misConsultas = mensajes.filter(m => String(m.usuarioId) === String(sesion.usuarioId));
+
+        contenedorConsultas.innerHTML = "";
+        if (misConsultas.length === 0) {
+            contenedorConsultas.innerHTML = "<p>No has realizado ninguna consulta.</p>";
+        } else {
+            misConsultas.forEach(consulta => {
+                const div = document.createElement("div");
+                div.className = "tarjeta-consulta";
+                div.innerHTML = `
+                    <div class="consulta-fecha">${consulta.fecha}</div>
+                    <p><strong>Tu consulta:</strong> ${consulta.comentario}</p>
+                    ${consulta.respuesta ? `
+                        <div class="respuesta-admin">
+                            <strong>Respuesta de la Municipalidad:</strong>
+                            <p>${consulta.respuesta}</p>
+                        </div>
+                    ` : `
+                        <p class="estado-pendiente"><em>Esperando respuesta...</em></p>
+                    `}
+                `;
+                contenedorConsultas.appendChild(div);
+            });
+        }
 
     } catch (error) {
         console.error("Error al cargar perfil:", error);
@@ -69,10 +96,5 @@ async function cargarPerfil() {
         });
     }
 }
-
-btnCerrarSesion.addEventListener("click", async () => {
-    await cerrarSesion();
-    window.location.href = "../pages/login.html";
-});
 
 cargarPerfil();

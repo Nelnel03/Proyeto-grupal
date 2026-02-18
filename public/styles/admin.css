@@ -192,3 +192,24 @@
         gap: 5px;
     }
 }
+
+/* Mensajes de Contacto - Admin Styles */
+.mensaje-texto {
+    font-size: 0.95rem;
+    line-height: 1.4;
+    margin-bottom: 8px;
+}
+
+.respuesta-admin {
+    font-size: 0.85rem;
+    background: #fff4e5;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #ffcc80;
+    margin-top: 5px;
+    color: #5d4037;
+}
+
+.respuesta-admin strong {
+    color: #e65100;
+}

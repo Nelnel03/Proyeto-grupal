@@ -18,15 +18,6 @@ const reporteDescripcion = document.getElementById("reporteDescripcion");
 const reporteUbicacion = document.getElementById("reporteUbicacion");
 const btnEnviarReporte = document.getElementById("btnEnviarReporte");
 
-// Protección de ruta para usuarioIniciado.html
-if (window.location.pathname.includes("usuarioIniciado.html")) {
-    obtenerSesionActiva().then(sesion => {
-        if (!sesion || !sesion.usuarioId) {
-            window.location.href = "../pages/login.html";
-        }
-    });
-}
-
 
 async function cargarProyectos() {
     try {
@@ -137,6 +128,25 @@ btnEnviarReporte.addEventListener("click", async () => {
             text: "Error al enviar reporte: " + error.message
         });
     }
+});
+
+// Lógica para secciones expandibles
+document.querySelectorAll(".card-expandible").forEach(card => {
+    const header = card.querySelector(".card-expandible-header");
+
+    header.addEventListener("click", (e) => {
+        card.classList.toggle("expanded");
+
+        // Cambiar texto del botón según el estado
+        const btn = card.querySelector(".btn-toggle-expand");
+        const isExpanded = card.classList.contains("expanded");
+
+        if (card.id === "seccionProyectos") {
+            btn.innerHTML = isExpanded ? `Ocultar Proyectos <span class="icon-arrow">▼</span>` : `Ver Proyectos <span class="icon-arrow">▼</span>`;
+        } else if (card.id === "seccionServicios") {
+            btn.innerHTML = isExpanded ? `Ocultar Servicios <span class="icon-arrow">▼</span>` : `Ver Servicios <span class="icon-arrow">▼</span>`;
+        }
+    });
 });
 
 cargarProyectos();

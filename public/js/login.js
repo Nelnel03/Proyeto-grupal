@@ -42,7 +42,7 @@ btnIniciarSesion.addEventListener("click", async () => {
             timer: 2000,
             showConfirmButton: false
         }).then(() => {
-            window.location.href = "../pages/usuarioIniciado.html";
+            window.location.href = "../pages/home.html";
         });
 
     } catch (error) {

@@ -14,11 +14,10 @@
 
 <body>
 
-
     <nav class="nav">
         <img src="../imgs/descarga.png" width="100" height="100" alt="logo">
         <h1>Municipalidad de Puntarenas</h1>
-        <ul>
+        <ul id="navbar-links">
             <li><a href="../pages/home.html">Inicio</a></li>
             <li><a href="../pages/sobreNosotros.html">Nosotros</a></li>
             <li><a href="../pages/login.html">Login</a></li>
@@ -36,11 +35,19 @@
                     class="d-block w-100" alt="...">
             </div>
             <div class="carousel-item">
-
                 <img src="https://elmundo.cr/wp-content/uploads/2024/08/Camara-Turismo-Puntarenas-1.jpg"
                     class="d-block w-100" alt="...">
             </div>
         </div>
+
+        <!-- Ajuste del Carrusel: Texto sobrepuesto -->
+        <div class="carousel-caption-custom">
+            <h1>Municipalidad de Puntarenas</h1>
+            <p>Trabajamos con compromiso, transparencia y responsabilidad para mejorar la calidad de vida de todos los
+                habitantes del cantón. Esta plataforma permite reportar situaciones de manera rápida y sencilla.</p>
+            <a href="#reporteTipo" class="btn-reporte-hero">Hacer un Reporte</a>
+        </div>
+
         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleRide" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Previous</span>
@@ -51,25 +58,59 @@
         </button>
     </div>
 
-    <div class="hero">
-
-        <p>La Municipalidad de Puntarenas trabaja con compromiso, transparencia y responsabilidad para mejorar la
-            calidad de
-            vida de todos los habitantes del cantón. Esta plataforma permite reportar situaciones que requieran atención
-            municipal de manera rápida y sencilla.</p>
-    </div>
-
-    <div class="seccion-home">
-        <h2> Proyectos Viales</h2>
-        <div class="tarjetas" id="contenedorProyectos">
-            <p class="mensajeVacio">Cargando proyectos...</p>
+    <div class="seccion-ejes">
+        <div class="eje-item">
+            <div class="eje-icon">🤝</div>
+            <h3>Compromiso</h3>
+            <p>Dedicados al bienestar y desarrollo integral de todos los habitantes del cantón.</p>
+        </div>
+        <div class="eje-item">
+            <div class="eje-icon">⚖️</div>
+            <h3>Transparencia</h3>
+            <p>Gestión abierta y honesta para fortalecer la confianza de nuestra comunidad.</p>
+        </div>
+        <div class="eje-item">
+            <div class="eje-icon">📈</div>
+            <h3>Progreso</h3>
+            <p>Impulsando obras y servicios públicos de calidad para un futuro mejor.</p>
         </div>
     </div>
 
-    <div class="seccion-home">
-        <h2> Servicios Públicos</h2>
-        <div class="tarjetas" id="contenedorServicios">
-            <p class="mensajeVacio">Cargando servicios...</p>
+    <div class="seccion-home card-expandible" id="seccionProyectos">
+        <div class="card-expandible-header">
+            <div class="card-img-wrapper">
+                <img src="../imgs/vialpuerto.webp" alt="Proyectos">
+            </div>
+            <div class="card-info">
+                <h2>Proyectos Viales</h2>
+                <p class="seccion-intro">Impulsamos el desarrollo de nuestra infraestructura vial para garantizar
+                    caminos más seguros y eficientes.</p>
+                <button class="btn-toggle-expand">Ver Proyectos <span class="icon-arrow">▼</span></button>
+            </div>
+        </div>
+        <div class="card-expandible-content">
+            <div class="tarjetas" id="contenedorProyectos">
+                <p class="mensajeVacio">Cargando proyectos...</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="seccion-home card-expandible" id="seccionServicios">
+        <div class="card-expandible-header">
+            <div class="card-img-wrapper">
+                <img src="../imgs/servicios publicos puerto.jpg" alt="Servicios">
+            </div>
+            <div class="card-info">
+                <h2>Servicios Públicos</h2>
+                <p class="seccion-intro">Comprometidos con brindar servicios de calidad que faciliten la vida diaria y
+                    el bienestar de nuestros ciudadanos.</p>
+                <button class="btn-toggle-expand">Ver Servicios <span class="icon-arrow">▼</span></button>
+            </div>
+        </div>
+        <div class="card-expandible-content">
+            <div class="tarjetas" id="contenedorServicios">
+                <p class="mensajeVacio">Cargando servicios...</p>
+            </div>
         </div>
     </div>
 
@@ -96,6 +137,7 @@
         <p>© 2026 Municipalidad de Puntarenas — Todos los derechos reservados</p>
     </footer>
 
+    <script src="../js/navbar.js" type="module"></script>
     <script src="../js/home.js" type="module"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
