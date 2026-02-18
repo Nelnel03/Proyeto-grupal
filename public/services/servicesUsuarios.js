@@ -4,6 +4,14 @@ const endpoint = "usuarios";
 
 const endpointSesion = "sesionActiva";
 
+const validarEmail = (email) => {
+    return String(email)
+        .toLowerCase()
+        .match(
+            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        );
+};
+
 function obtenerUsuarios() {
     return getDatos(endpoint);
 }
@@ -11,6 +19,14 @@ function obtenerUsuarios() {
 async function registrarUsuario(data) {
     if (!data.nombre || !data.correo || !data.password || !data.telefono) {
         throw new Error("Todos los campos (nombre, correo, contraseña, teléfono) son obligatorios");
+    }
+
+    if (!validarEmail(data.correo)) {
+        throw new Error("El formato del correo electrónico no es válido");
+    }
+
+    if (data.password.length < 8) {
+        throw new Error("La contraseña debe tener al menos 8 caracteres");
     }
 
     const usuarios = await obtenerUsuarios();
@@ -35,7 +51,6 @@ async function iniciarSesion(email, password) {
     }
 
     if (usuarioEncontrado) {
-        // Guardar sesión en base de datos
         await fetch(`http://localhost:3000/${endpointSesion}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
@@ -82,10 +97,25 @@ async function promoverAdmin(usuario) {
             password: usuario.password
         })
     });
+
     if (!response.ok) {
-        throw new Error("Error al promover usuario a administrador");
+        throw new Error("Error al crear el perfil de administrador");
     }
+
+    await eliminarUsuario(usuario.id);
+
     return await response.json();
+}
+
+async function eliminarUsuario(id) {
+    const response = await fetch(`http://localhost:3000/${endpoint}/${id}`, {
+        method: "DELETE"
+    });
+
+    if (!response.ok) {
+        throw new Error("Error al eliminar el usuario original");
+    }
+    return true;
 }
 
 export { obtenerUsuarios, registrarUsuario, iniciarSesion, obtenerSesionActiva, cerrarSesion, obtenerUsuarioPorId, promoverAdmin };

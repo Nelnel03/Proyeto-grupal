@@ -29,6 +29,7 @@ const tablaReportes = document.getElementById("tablaReportes");
 const modalDetalle = document.getElementById("modalDetalle");
 const btnCerrarModal = document.getElementById("btnCerrarModal");
 const detalleId = document.getElementById("detalleId");
+const detalleUsuario = document.getElementById("detalleUsuario");
 const detalleTipo = document.getElementById("detalleTipo");
 const detalleDescripcion = document.getElementById("detalleDescripcion");
 const detalleUbicacion = document.getElementById("detalleUbicacion");
@@ -169,6 +170,19 @@ async function verDetalleReporte(id) {
         detalleUbicacion.textContent = reporte.ubicacion;
         detalleEstado.textContent = reporte.estado;
         detalleFecha.textContent = reporte.fecha;
+
+        // Intentar obtener el nombre del usuario
+        if (reporte.usuarioId) {
+            try {
+                const usuario = await obtenerUsuarioPorId(reporte.usuarioId);
+                detalleUsuario.textContent = `${usuario.nombre} ${usuario.apellido}`;
+            } catch (err) {
+                detalleUsuario.textContent = "Usuario no encontrado";
+            }
+        } else {
+            detalleUsuario.textContent = "Anónimo";
+        }
+
         modalDetalle.classList.add("visible");
     } catch (error) {
         Swal.fire({

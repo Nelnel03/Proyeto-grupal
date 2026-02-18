@@ -17,11 +17,21 @@ btn.addEventListener("click", async () => {
         return;
     }
 
-    if (!email.value.includes('@')) {
+    const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (!emailRegex.test(email.value.toLowerCase())) {
         Swal.fire({
             icon: 'error',
-            title: 'Error de autenticación',
-            text: 'El correo debe contener un "@"'
+            title: 'Correo inválido',
+            text: 'Por favor, ingresa un correo electrónico real (ejemplo@dominio.com).'
+        });
+        return;
+    }
+
+    if (password.value.length < 8) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Contraseña débil',
+            text: 'La contraseña debe tener al menos 8 caracteres para mayor seguridad.'
         });
         return;
     }

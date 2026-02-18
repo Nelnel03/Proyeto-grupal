@@ -100,6 +100,14 @@
       "correo": "juan@gmail.com",
       "password": "11",
       "telefono": "11111111"
+    },
+    {
+      "id": "4b37",
+      "nombre": "tayro",
+      "apellido": "arce",
+      "correo": "tayro@gmail.com",
+      "password": "12345678",
+      "telefono": "11111111"
     }
   ],
   "administradores": [
@@ -118,6 +126,14 @@
       "fechaInicio": "2026-02-02",
       "descripcion": "arreglo de la calle en la comunidad",
       "estado": "Planificación"
+    },
+    {
+      "id": "95c2",
+      "nombre": "nuevas señales",
+      "presupuesto": "50000",
+      "fechaInicio": "2026-02-20",
+      "descripcion": "añadir nuevas señales de transito debido a que las anteriores estan muy deterioradas y varios vecinos se robaron altos para vender el perlin",
+      "estado": "Planificación"
     }
   ],
   "serviciosPublicos": [
@@ -130,8 +146,8 @@
     }
   ],
   "sesionActiva": {
-    "usuarioId": "adm1",
-    "rol": "admin"
+    "usuarioId": "4b37",
+    "rol": "usuario"
   },
   "mensajesContacto": [
     {
@@ -204,6 +220,16 @@
       "comentario": "sgsges",
       "fecha": "18/2/2026",
       "usuarioId": "34d7"
+    },
+    {
+      "id": "83f5",
+      "nombre": "tayro",
+      "apellido": "arce",
+      "cedula": "1111111",
+      "correo": "tayro@gmail.com",
+      "comentario": "dbidbibgdibdi",
+      "fecha": "18/2/2026",
+      "usuarioId": "4b37"
     }
   ]
 }
