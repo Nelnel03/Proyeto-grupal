@@ -6,22 +6,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - Dashboard</title>
 
-
+    <link rel="stylesheet" href="../styles/global.css">
+    <link rel="stylesheet" href="../styles/admin.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
+
+    <div class="nav">
+        <div class="nav-header">
+            <img src="../imgs/descarga.png" alt="Logo Municipalidad" class="nav-logo">
+            <h1>Municipalidad de Puntarenas</h1>
+        </div>
+        <ul class="nav-links">
+            <li><a href="../pages/home.html">Inicio</a></li>
+        </ul>
+    </div>
 
     <aside class="sidebar">
         <h2>Panel Admin</h2>
         <button id="btnMenuReportes" class="active">Gestión de Reportes</button>
         <button id="btnMenuProyectos">Gestión de Proyectos Viales</button>
         <button id="btnMenuServicios">Gestión de Servicios Públicos</button>
-        <a href="../pages/home.html" class="btn-home">Volver al Home</a>
+        <button id="btnMenuMensajes">Mensajes de Contacto</button>
+        <button id="btnMenuUsuarios">Gestión de Usuarios</button>
     </aside>
 
     <div class="main">
 
+        <section id="seccionUsuarios" class="seccion">
+            <hr>
+            <h1>Gestión de Usuarios</h1>
+            <p>Administra los ciudadanos registrados y otórgales permisos de administrador si es necesario.</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Correo</th>
+                        <th>Teléfono</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaUsuarios">
+                </tbody>
+            </table>
+        </section>
+
         <section id="seccionReportes" class="seccion activa">
+            <hr>
             <h1>Gestión de Reportes</h1>
             <table>
                 <thead>
@@ -41,6 +74,7 @@
         </section>
 
         <section id="seccionProyectos" class="seccion">
+            <hr>
             <h1>Gestión de Proyectos Viales</h1>
 
             <div class="formulario">
@@ -59,7 +93,7 @@
                     <button id="btnCancelarProyecto" class="btn btnCancelar" style="display:none;">Cancelar</button>
                 </div>
             </div>
-
+            <hr>
             <table>
                 <thead>
                     <tr>
@@ -77,6 +111,7 @@
             </table>
         </section>
         <section id="seccionServicios" class="seccion">
+            <hr>
             <h1>Gestión de Servicios Públicos</h1>
 
             <div class="formulario">
@@ -94,7 +129,7 @@
                     <button id="btnCancelarServicio" class="btn btn-cancelar" style="display:none;">Cancelar</button>
                 </div>
             </div>
-
+            <hr>
             <table>
                 <thead>
                     <tr>
@@ -111,11 +146,33 @@
             </table>
         </section>
 
+        <section id="seccionMensajes" class="seccion">
+            <hr>
+            <h1>Mensajes de Contacto</h1>
+            <p>Aquí puedes ver los mensajes enviados por los ciudadanos desde el formulario de contacto.</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Remitente</th>
+                        <th>Cédula</th>
+                        <th>Correo</th>
+                        <th>Comentario</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaMensajes">
+                    <!-- Los mensajes se cargarán aquí -->
+                </tbody>
+            </table>
+        </section>
+
     </div>
 
     <div id="modalDetalle" class="modal-fondo">
         <div class="modal-contenido">
             <h3>Detalle del Reporte</h3>
+            <hr>
             <p><strong>ID:</strong> <span id="detalleId"></span></p>
             <p><strong>Tipo:</strong> <span id="detalleTipo"></span></p>
             <p><strong>Descripción:</strong> <span id="detalleDescripcion"></span></p>
@@ -125,6 +182,10 @@
             <button id="btnCerrarModal" class="btn btn-cancelar">Cerrar</button>
         </div>
     </div>
+
+    <footer>
+        <p>© 2026 Municipalidad de Puntarenas — Todos los derechos reservados</p>
+    </footer>
 
     <script src="../js/admin.js" type="module"></script>
 </body>

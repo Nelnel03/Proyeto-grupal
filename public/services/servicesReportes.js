@@ -21,7 +21,8 @@ async function crearReporte(data) {
         descripcion: data.descripcion,
         ubicacion: data.ubicacion,
         estado: "pendiente",
-        fecha: fechaActual
+        fecha: fechaActual,
+        usuarioId: data.usuarioId
     };
 
     return await postDatos(endpoint, nuevoReporte);

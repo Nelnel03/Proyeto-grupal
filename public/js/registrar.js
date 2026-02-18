@@ -9,7 +9,29 @@ const btn = document.getElementById("btn");
 
 btn.addEventListener("click", async () => {
     if (!nombre.value || !apellido.value || !email.value || !password.value || !telefono.value) {
-        alert("Por favor, completa todos los campos.");
+        Swal.fire({
+            icon: 'warning',
+            title: 'Campos incompletos',
+            text: 'Por favor, completa todos los campos.'
+        });
+        return;
+    }
+
+    if (!email.value.includes('@')) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error de autenticación',
+            text: 'El correo debe contener un "@"'
+        });
+        return;
+    }
+
+    if (telefono.value.length > 8 || Number(telefono.value) < 0) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Teléfono inválido',
+            text: 'El teléfono debe tener máximo 8 dígitos y no puede ser negativo.'
+        });
         return;
     }
 
@@ -23,9 +45,20 @@ btn.addEventListener("click", async () => {
 
     try {
         await registrarUsuario(data);
-        alert("Usuario registrado con éxito");
-        window.location.href = "../pages/login.html";
+        Swal.fire({
+            icon: 'success',
+            title: 'Registro exitoso',
+            text: 'Usuario registrado con éxito',
+            timer: 2000,
+            showConfirmButton: false
+        }).then(() => {
+            window.location.href = "../pages/login.html";
+        });
     } catch (error) {
-        alert("Error al registrar: " + error.message);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error al registrar',
+            text: error.message
+        });
     }
 });

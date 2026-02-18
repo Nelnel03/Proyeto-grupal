@@ -1,0 +1,81 @@
+/* Profile container */
+.perfil-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 30px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.info-usuario h2 {
+    border-bottom: 2px solid var(--primary-color);
+    display: inline-block;
+    padding-bottom: 5px;
+    margin-bottom: 20px;
+    color: var(--secondary-color);
+}
+
+.mis-reportes {
+    margin-top: 30px;
+}
+
+.mis-reportes h2 {
+    color: var(--secondary-color);
+    margin-bottom: 15px;
+}
+
+.btn-cerrar {
+    background-color: var(--danger-color);
+    color: white;
+    margin-top: 20px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* Consultas */
+.mis-consultas {
+    margin-top: 30px;
+}
+
+.mis-consultas h2 {
+    color: var(--secondary-color);
+    margin-bottom: 15px;
+}
+
+.tarjeta-consulta {
+    background: #f8f9fa;
+    border-left: 5px solid #ff8c00;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    position: relative;
+}
+
+.consulta-fecha {
+    font-size: 0.85rem;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.respuesta-admin {
+    margin-top: 15px;
+    padding: 15px;
+    background: #e9ecef;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+}
+
+.respuesta-admin strong {
+    color: #ff8c00;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.estado-pendiente {
+    color: #6c757d;
+    font-size: 0.9rem;
+}

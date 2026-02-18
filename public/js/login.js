@@ -7,7 +7,11 @@ const passwordInput = document.getElementById("contraseña");
 
 btnIniciarSesion.addEventListener("click", async () => {
     if (!emailInput.value || !passwordInput.value) {
-        alert("Por favor, completa todos los campos.");
+        Swal.fire({
+            icon: 'warning',
+            title: 'Campos incompletos',
+            text: 'Por favor, completa todos los campos.'
+        });
         return;
     }
 
@@ -18,16 +22,34 @@ btnIniciarSesion.addEventListener("click", async () => {
         const admin = await iniciarSesionAdmin(email, password);
 
         if (admin) {
-            alert("Bienvenido Administrador, " + admin.nombre);
-            window.location.href = "../pages/admin.html";
+            Swal.fire({
+                icon: 'success',
+                title: 'Bienvenido Administrador',
+                text: admin.nombre,
+                timer: 2000,
+                showConfirmButton: false
+            }).then(() => {
+                window.location.href = "../pages/admin.html";
+            });
             return;
         }
 
         const usuario = await iniciarSesion(email, password);
-        alert("Bienvenido, " + usuario.nombre);
-        window.location.href = "../pages/user.html";
+        Swal.fire({
+            icon: 'success',
+            title: 'Bienvenido',
+            text: usuario.nombre,
+            timer: 2000,
+            showConfirmButton: false
+        }).then(() => {
+            window.location.href = "../pages/home.html";
+        });
 
     } catch (error) {
-        alert("Correo o contraseña incorrectos");
+        Swal.fire({
+            icon: 'error',
+            title: 'Error de autenticación',
+            text: 'Correo o contraseña incorrectos'
+        });
     }
 });

@@ -1,20 +1,28 @@
 
+
 // Importar servicios
 import { obtenerReportes, obtenerReportePorId, actualizarReporte } from "../services/servicesReportes.js";
 import { obtenerProyectos, crearProyecto, actualizarProyecto, eliminarProyecto } from "../services/servicesProyectos.js";
 import { obtenerServicios, crearServicio, actualizarServicio, eliminarServicio } from "../services/servicesServicios.js";
+import { obtenerMensajes, actualizarMensaje } from "../services/servicesContacto.js";
+import { obtenerUsuarios, promoverAdmin } from "../services/servicesUsuarios.js";
+import { obtenerAdmins } from "../services/servicesAdmin.js";
 
 // Referencias DOM - Navegación
 const btnMenuReportes = document.getElementById("btnMenuReportes");
 const btnMenuProyectos = document.getElementById("btnMenuProyectos");
 const btnMenuServicios = document.getElementById("btnMenuServicios");
+const btnMenuMensajes = document.getElementById("btnMenuMensajes");
+const btnMenuUsuarios = document.getElementById("btnMenuUsuarios");
 
 const seccionReportes = document.getElementById("seccionReportes");
 const seccionProyectos = document.getElementById("seccionProyectos");
 const seccionServicios = document.getElementById("seccionServicios");
+const seccionMensajes = document.getElementById("seccionMensajes");
+const seccionUsuarios = document.getElementById("seccionUsuarios");
 
-const secciones = [seccionReportes, seccionProyectos, seccionServicios];
-const botonesMenu = [btnMenuReportes, btnMenuProyectos, btnMenuServicios];
+const secciones = [seccionReportes, seccionProyectos, seccionServicios, seccionMensajes, seccionUsuarios];
+const botonesMenu = [btnMenuReportes, btnMenuProyectos, btnMenuServicios, btnMenuMensajes, btnMenuUsuarios];
 
 // Referencias DOM - Reportes
 const tablaReportes = document.getElementById("tablaReportes");
@@ -48,6 +56,12 @@ const btnCrearServicio = document.getElementById("btnCrearServicio");
 const btnCancelarServicio = document.getElementById("btnCancelarServicio");
 const tituloFormServicio = document.getElementById("tituloFormServicio");
 
+// Referencias DOM - Mensajes
+const tablaMensajes = document.getElementById("tablaMensajes");
+
+// Referencias DOM - Usuarios
+const tablaUsuarios = document.getElementById("tablaUsuarios");
+
 // Estado de edición
 let proyectoEditandoId = null;
 let servicioEditandoId = null;
@@ -74,6 +88,16 @@ btnMenuProyectos.addEventListener("click", () => {
 btnMenuServicios.addEventListener("click", () => {
     mostrarSeccion(2);
     cargarServicios();
+});
+
+btnMenuMensajes.addEventListener("click", () => {
+    mostrarSeccion(3);
+    cargarMensajes();
+});
+
+btnMenuUsuarios.addEventListener("click", () => {
+    mostrarSeccion(4);
+    cargarUsuarios();
 });
 
 // MÓDULO REPORTES
@@ -128,7 +152,11 @@ async function cargarReportes() {
         });
 
     } catch (error) {
-        alert("Error al cargar reportes: " + error.message);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Error al cargar reportes: ' + error.message
+        });
     }
 }
 
@@ -143,17 +171,31 @@ async function verDetalleReporte(id) {
         detalleFecha.textContent = reporte.fecha;
         modalDetalle.classList.add("visible");
     } catch (error) {
-        alert("Error al obtener detalle: " + error.message);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Error al obtener detalle: ' + error.message
+        });
     }
 }
 
 async function actualizarEstadoReporte(id, nuevoEstado) {
     try {
         await actualizarReporte(id, { estado: nuevoEstado });
-        alert("Estado del reporte actualizado a: " + nuevoEstado);
+        Swal.fire({
+            icon: 'success',
+            title: 'Actualizado',
+            text: "Estado del reporte actualizado a: " + nuevoEstado,
+            timer: 2000,
+            showConfirmButton: false
+        });
         cargarReportes();
     } catch (error) {
-        alert("Error al actualizar estado: " + error.message);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Error al actualizar estado: ' + error.message
+        });
     }
 }
 
@@ -205,7 +247,11 @@ async function cargarProyectos() {
         });
 
     } catch (error) {
-        alert("Error al cargar proyectos: " + error.message);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Error al cargar proyectos: ' + error.message
+        });
     }
 }
 
@@ -223,7 +269,11 @@ function limpiarFormularioProyecto() {
 
 btnCrearProyecto.addEventListener("click", async () => {
     if (!proyNombre.value || !proyPresupuesto.value || !proyFechaInicio.value) {
-        alert("Nombre, presupuesto y fecha de inicio son obligatorios.");
+        Swal.fire({
+            icon: 'warning',
+            title: 'Campos requeridos',
+            text: "Nombre, presupuesto y fecha de inicio son obligatorios."
+        });
         return;
     }
 
@@ -238,15 +288,31 @@ btnCrearProyecto.addEventListener("click", async () => {
     try {
         if (proyectoEditandoId) {
             await actualizarProyecto(proyectoEditandoId, data);
-            alert("Proyecto actualizado correctamente");
+            Swal.fire({
+                icon: 'success',
+                title: 'Éxito',
+                text: "Proyecto actualizado correctamente",
+                timer: 2000,
+                showConfirmButton: false
+            });
         } else {
             await crearProyecto(data);
-            alert("Proyecto creado correctamente");
+            Swal.fire({
+                icon: 'success',
+                title: 'Éxito',
+                text: "Proyecto creado correctamente",
+                timer: 2000,
+                showConfirmButton: false
+            });
         }
         limpiarFormularioProyecto();
         cargarProyectos();
     } catch (error) {
-        alert("Error: " + error.message);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: error.message
+        });
     }
 });
 
@@ -256,7 +322,11 @@ async function editarProyectoHandler(id) {
         const proyecto = proyectos.find((p) => String(p.id) === String(id));
 
         if (!proyecto) {
-            alert("Proyecto no encontrado");
+            Swal.fire({
+                icon: 'error',
+                title: 'No encontrado',
+                text: "Proyecto no encontrado"
+            });
             return;
         }
 
@@ -271,21 +341,45 @@ async function editarProyectoHandler(id) {
         btnCrearProyecto.textContent = "Actualizar Proyecto";
         btnCancelarProyecto.style.display = "inline-block";
     } catch (error) {
-        alert("Error al cargar proyecto: " + error.message);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Error al cargar proyecto: ' + error.message
+        });
     }
 }
 
 async function eliminarProyectoHandler(id) {
-    const confirmar = confirm("¿Estás seguro de que deseas eliminar este proyecto?");
-    if (!confirmar) return;
-
-    try {
-        await eliminarProyecto(id);
-        alert("Proyecto eliminado correctamente");
-        cargarProyectos();
-    } catch (error) {
-        alert("Error al eliminar: " + error.message);
-    }
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: "¿Estás seguro de que deseas eliminar este proyecto?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar'
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+            try {
+                await eliminarProyecto(id);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Eliminado',
+                    text: 'Proyecto eliminado correctamente',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+                cargarProyectos();
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Error al eliminar: ' + error.message
+                });
+            }
+        }
+    });
 }
 
 btnCancelarProyecto.addEventListener("click", () => {
@@ -335,7 +429,11 @@ async function cargarServicios() {
         });
 
     } catch (error) {
-        alert("Error al cargar servicios: " + error.message);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Error al cargar servicios: ' + error.message
+        });
     }
 }
 
@@ -352,7 +450,11 @@ function limpiarFormularioServicio() {
 
 btnCrearServicio.addEventListener("click", async () => {
     if (!servTipo.value || !servDescripcion.value || !servResponsable.value) {
-        alert("Tipo, descripción y responsable son obligatorios.");
+        Swal.fire({
+            icon: 'warning',
+            title: 'Campos requeridos',
+            text: "Tipo, descripción y responsable son obligatorios."
+        });
         return;
     }
 
@@ -366,15 +468,31 @@ btnCrearServicio.addEventListener("click", async () => {
     try {
         if (servicioEditandoId) {
             await actualizarServicio(servicioEditandoId, data);
-            alert("Servicio actualizado correctamente");
+            Swal.fire({
+                icon: 'success',
+                title: 'Éxito',
+                text: "Servicio actualizado correctamente",
+                timer: 2000,
+                showConfirmButton: false
+            });
         } else {
             await crearServicio(data);
-            alert("Servicio creado correctamente");
+            Swal.fire({
+                icon: 'success',
+                title: 'Éxito',
+                text: "Servicio creado correctamente",
+                timer: 2000,
+                showConfirmButton: false
+            });
         }
         limpiarFormularioServicio();
         cargarServicios();
     } catch (error) {
-        alert("Error: " + error.message);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: error.message
+        });
     }
 });
 
@@ -384,7 +502,11 @@ async function editarServicioHandler(id) {
         const servicio = servicios.find((s) => String(s.id) === String(id));
 
         if (!servicio) {
-            alert("Servicio no encontrado");
+            Swal.fire({
+                icon: 'error',
+                title: 'No encontrado',
+                text: "Servicio no encontrado"
+            });
             return;
         }
 
@@ -398,26 +520,220 @@ async function editarServicioHandler(id) {
         btnCrearServicio.textContent = "Actualizar Servicio";
         btnCancelarServicio.style.display = "inline-block";
     } catch (error) {
-        alert("Error al cargar servicio: " + error.message);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Error al cargar servicio: ' + error.message
+        });
     }
 }
 
 async function eliminarServicioHandler(id) {
-    const confirmar = confirm("¿Estás seguro de que deseas eliminar este servicio?");
-    if (!confirmar) return;
-
-    try {
-        await eliminarServicio(id);
-        alert("Servicio eliminado correctamente");
-        cargarServicios();
-    } catch (error) {
-        alert("Error al eliminar: " + error.message);
-    }
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: "¿Estás seguro de que deseas eliminar este servicio?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar'
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+            try {
+                await eliminarServicio(id);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Eliminado',
+                    text: 'Servicio eliminado correctamente',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+                cargarServicios();
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Error al eliminar: ' + error.message
+                });
+            }
+        }
+    });
 }
 
 btnCancelarServicio.addEventListener("click", () => {
     limpiarFormularioServicio();
 });
+
+// MÓDULO MENSAJES
+
+async function cargarMensajes() {
+    try {
+        const mensajes = await obtenerMensajes();
+        tablaMensajes.innerHTML = "";
+
+        if (mensajes.length === 0) {
+            tablaMensajes.innerHTML = `<tr><td colspan="5" style="text-align:center;">No hay mensajes recibidos</td></tr>`;
+            return;
+        }
+
+        mensajes.forEach((msg) => {
+            const fila = document.createElement("tr");
+            fila.innerHTML = `
+                <td>${msg.fecha || "-"}</td>
+                <td>${msg.nombre} ${msg.apellido}</td>
+                <td>${msg.cedula}</td>
+                <td>${msg.correo}</td>
+                <td>
+                    <div class="mensaje-texto">${msg.comentario}</div>
+                    ${msg.respuesta ? `<div class="respuesta-admin"><strong>Respuesta:</strong> ${msg.respuesta}</div>` : ""}
+                </td>
+                <td class="acciones">
+                    <button class="btn btn-actualizar btn-responder-mensaje" data-id="${msg.id}">
+                        ${msg.respuesta ? "Editar Respuesta" : "Responder"}
+                    </button>
+                </td>
+            `;
+            tablaMensajes.appendChild(fila);
+        });
+
+        const botonesResponder = document.querySelectorAll(".btn-responder-mensaje");
+        botonesResponder.forEach((btn) => {
+            btn.addEventListener("click", () => {
+                responderMensaje(btn.dataset.id);
+            });
+        });
+
+    } catch (error) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Error al cargar mensajes: ' + error.message
+        });
+    }
+}
+
+async function responderMensaje(id) {
+    try {
+        const mensajes = await obtenerMensajes();
+        const mensaje = mensajes.find(m => String(m.id) === String(id));
+
+        const { value: respuesta } = await Swal.fire({
+            title: 'Responder Mensaje',
+            input: 'textarea',
+            inputLabel: `Responder a ${mensaje.nombre}`,
+            inputValue: mensaje.respuesta || "",
+            inputPlaceholder: 'Escribe tu respuesta aquí...',
+            showCancelButton: true,
+            confirmButtonColor: '#ff8c00',
+            confirmButtonText: 'Enviar Respuesta',
+            cancelButtonText: 'Cancelar'
+        });
+
+        if (respuesta) {
+            await actualizarMensaje(id, { respuesta: respuesta });
+            Swal.fire({
+                icon: 'success',
+                title: 'Respuesta Enviada',
+                text: 'El ciudadano podrá ver esta respuesta en su perfil.',
+                timer: 2000,
+                showConfirmButton: false
+            });
+            cargarMensajes();
+        }
+    } catch (error) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Error al responder: ' + error.message
+        });
+    }
+}
+
+// MÓDULO USUARIOS
+
+async function cargarUsuarios() {
+    try {
+        const usuarios = await obtenerUsuarios();
+        const admins = await obtenerAdmins();
+        tablaUsuarios.innerHTML = "";
+
+        if (usuarios.length === 0) {
+            tablaUsuarios.innerHTML = `<tr><td colspan="5" style="text-align:center;">No hay usuarios registrados</td></tr>`;
+            return;
+        }
+
+        usuarios.forEach((user) => {
+            const esAdmin = admins.some(a => a.correo === user.correo);
+            const fila = document.createElement("tr");
+            fila.innerHTML = `
+                <td>${user.id}</td>
+                <td>${user.nombre} ${user.apellido}</td>
+                <td>${user.correo}</td>
+                <td>${user.telefono}</td>
+                <td class="acciones">
+                    ${esAdmin
+                    ? '<span class="estado-badge estado-resuelto">Administrador</span>'
+                    : `<button class="btn btn-actualizar btn-promover-user" data-id="${user.id}">Promover a Admin</button>`
+                }
+                </td>
+            `;
+            tablaUsuarios.appendChild(fila);
+        });
+
+        const botonesPromover = document.querySelectorAll(".btn-promover-user");
+        botonesPromover.forEach((btn) => {
+            btn.addEventListener("click", () => {
+                promoverUsuario(btn.dataset.id);
+            });
+        });
+
+    } catch (error) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Error al cargar usuarios: ' + error.message
+        });
+    }
+}
+
+async function promoverUsuario(id) {
+    Swal.fire({
+        title: '¿Promover a Administrador?',
+        text: "¿Estás seguro de que deseas otorgar permisos de administrador a este usuario?",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#ff8c00',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, promover',
+        cancelButtonText: 'Cancelar'
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+            try {
+                const usuarios = await obtenerUsuarios();
+                const usuario = usuarios.find(u => String(u.id) === String(id));
+
+                if (usuario) {
+                    await promoverAdmin(usuario);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Éxito',
+                        text: `${usuario.nombre} ahora es administrador.`,
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                    cargarUsuarios();
+                }
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: error.message
+                });
+            }
+        }
+    });
+}
 
 // Inicialización
 cargarReportes();

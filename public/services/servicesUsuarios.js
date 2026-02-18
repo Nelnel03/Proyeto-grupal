@@ -1,6 +1,8 @@
-import { getDatos, postDatos } from "./apis.js";
+import { getDatos, postDatos, getDatosPorId } from "./apis.js";
 
 const endpoint = "usuarios";
+
+const endpointSesion = "sesionActiva";
 
 function obtenerUsuarios() {
     return getDatos(endpoint);
@@ -23,7 +25,6 @@ async function registrarUsuario(data) {
 
 async function iniciarSesion(email, password) {
     const usuarios = await obtenerUsuarios();
-
     let usuarioEncontrado = null;
 
     for (let i = 0; i < usuarios.length; i++) {
@@ -33,11 +34,58 @@ async function iniciarSesion(email, password) {
         }
     }
 
-    if (usuarioEncontrado === null) {
-        throw new Error("Correo o contraseña incorrectos");
+    if (usuarioEncontrado) {
+        // Guardar sesión en base de datos
+        await fetch(`http://localhost:3000/${endpointSesion}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                usuarioId: usuarioEncontrado.id,
+                rol: "usuario"
+            })
+        });
+        return usuarioEncontrado;
     }
 
-    return usuarioEncontrado;
+    throw new Error("Correo o contraseña incorrectos");
 }
 
-export { obtenerUsuarios, registrarUsuario, iniciarSesion };
+async function obtenerSesionActiva() {
+    const response = await fetch(`http://localhost:3000/${endpointSesion}`);
+    if (!response.ok) return null;
+    return await response.json();
+}
+
+async function cerrarSesion() {
+    await fetch(`http://localhost:3000/${endpointSesion}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            usuarioId: null,
+            rol: null
+        })
+    });
+}
+
+function obtenerUsuarioPorId(id) {
+    return getDatosPorId(endpoint, id);
+}
+
+async function promoverAdmin(usuario) {
+    const response = await fetch("http://localhost:3000/administradores", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            id: `adm-${usuario.id}`,
+            nombre: usuario.nombre,
+            correo: usuario.correo,
+            password: usuario.password
+        })
+    });
+    if (!response.ok) {
+        throw new Error("Error al promover usuario a administrador");
+    }
+    return await response.json();
+}
+
+export { obtenerUsuarios, registrarUsuario, iniciarSesion, obtenerSesionActiva, cerrarSesion, obtenerUsuarioPorId, promoverAdmin };

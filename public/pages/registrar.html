@@ -5,30 +5,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>registro</title>
+
+    <link rel="stylesheet" href="../styles/global.css">
+    <link rel="stylesheet" href="../styles/login.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
-    <ul>
-        <li><a href="../pages/home.html">Home</a></li>
-    </ul>
+    <nav class="nav">
+        <img src="../imgs/descarga.png" width="100" height="100" alt="logo">
+        <h1>Municipalidad de Puntarenas</h1>
+        <ul id="navbar-links">
+            <li><a href="../pages/home.html">Inicio</a></li>
+            <li><a href="../pages/login.html">Login</a></li>
+            <li><a href="../pages/registrar.html">Registro</a></li>
+        </ul>
+    </nav>
 
-    <h1>registro</h1>
+    <div class="container-centrado">
+        <div class="form-card">
+            <h1>Registro de Usuario</h1>
+            <div class="form-group">
+                <input type="text" id="nombre" placeholder="Nombre">
+            </div>
+            <div class="form-group">
+                <input type="text" id="apellido" placeholder="Apellido">
+            </div>
+            <div class="form-group">
+                <input type="email" id="email" placeholder="Correo electrónico">
+            </div>
+            <div class="form-group">
+                <input type="password" id="password" placeholder="Contraseña">
+            </div>
+            <div class="form-group">
+                <input type="number" id="telefono" placeholder="Teléfono" min="0"
+                    oninput="if(this.value.length > 8) this.value = this.value.slice(0, 8);">
+            </div>
 
-
-    <div>
-        <input type="text" id="nombre" placeholder="Nombre">
-        <input type="text" id="apellido" placeholder="Apellido">
-        <input type="email" id="email" placeholder="correo">
-        <input type="password" id="password" placeholder="contraseña">
-        <input type="number" id="telefono" placeholder="telefono">
-
-        <button id="btn">registrar</button>
-        <p>¿ya tienes una cuenta?</p>
-        <a href="../pages/login.html">iniciar sesion</a>
-
-
-
+            <button id="btn">Registrar</button>
+            <p>¿Ya tienes una cuenta?</p>
+            <a href="../pages/login.html">Iniciar sesión</a>
+        </div>
     </div>
+
+
+    <footer>
+        <p>© 2026 Municipalidad de Puntarenas — Todos los derechos reservados</p>
+    </footer>
+    <script src="../js/navbar.js" type="module"></script>
     <script src="../js/registrar.js" type="module"></script>
 </body>
 

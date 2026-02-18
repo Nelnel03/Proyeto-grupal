@@ -1,12 +1,22 @@
 {
   "reportes": [
     {
-      "id": "e20f",
-      "tipo": "Alcantarillado",
-      "descripcion": "wswbhwsbwhbs",
-      "ubicacion": "swbwhsbwhsjw",
+      "id": "b390",
+      "tipo": "Bache",
+      "descripcion": "Un bache demasiado profundio en el que peligran tanto niños como autos",
+      "ubicacion": "Barranca Centro calle 5 avenida 8",
       "estado": "Resuelto",
-      "fecha": "17/2/2026"
+      "fecha": "17/2/2026",
+      "usuarioId": "99bd"
+    },
+    {
+      "id": "1b71",
+      "tipo": "Alumbrado",
+      "descripcion": "se fue la fucking luz",
+      "ubicacion": "calle san joaquin de santo tomas de san rafael",
+      "estado": "pendiente",
+      "fecha": "18/2/2026",
+      "usuarioId": "a43b"
     }
   ],
   "usuarios": [
@@ -33,6 +43,38 @@
       "correo": "AAAAA",
       "password": "AAAAA",
       "telefono": "111111111"
+    },
+    {
+      "id": "0d50",
+      "nombre": "Brandon",
+      "apellido": "Chavarria",
+      "correo": "bchava@gmail.com",
+      "password": "11112222",
+      "telefono": "62355532"
+    },
+    {
+      "id": "50f7",
+      "nombre": "Brandon",
+      "apellido": "Chavarria",
+      "correo": "bchavarriaafwdgmail.com",
+      "password": "11221122",
+      "telefono": "12345432"
+    },
+    {
+      "id": "99bd",
+      "nombre": "Brandon",
+      "apellido": "Chavarria",
+      "correo": "fwd@gmail.com",
+      "password": "11221122",
+      "telefono": "12324321"
+    },
+    {
+      "id": "a43b",
+      "nombre": "Nana",
+      "apellido": "Hachiko",
+      "correo": "nana@gmail.com",
+      "password": "12345",
+      "telefono": "26364025"
     }
   ],
   "administradores": [
@@ -60,6 +102,50 @@
       "descripcion": "limpieza de parque",
       "responsable": "Unamu",
       "estado": "Activo"
+    }
+  ],
+  "sesionActiva": {
+    "usuarioId": "adm1",
+    "rol": "admin"
+  },
+  "mensajesContacto": [
+    {
+      "id": "1fcd",
+      "nombre": "Brandon",
+      "apellido": "Chavarria",
+      "cedula": "119950235",
+      "correo": "bchavarriaafwd@gmail.com",
+      "comentario": "quiero comentarles que me defeco en Brandon Chavarria",
+      "fecha": "17/2/2026"
+    },
+    {
+      "id": "a572",
+      "nombre": "Brandon",
+      "apellido": "Chavarria",
+      "cedula": "119950235",
+      "correo": "bchavarriaafwd@gmail.com",
+      "comentario": "me defeco en randall chavarria",
+      "fecha": "17/2/2026"
+    },
+    {
+      "id": "edac",
+      "nombre": "jnasdsnjas",
+      "apellido": "sqdkjlqdnisw",
+      "cedula": "qdaiodjioqwj",
+      "correo": "qwdwqiodhioqw",
+      "comentario": "qwdjoqwdiwqj",
+      "fecha": "18/2/2026"
+    },
+    {
+      "id": "d795",
+      "nombre": "pepito",
+      "apellido": "djajodsd",
+      "cedula": "212941784",
+      "correo": "nana@gmail,com",
+      "comentario": "qwjndqsijdqw",
+      "fecha": "18/2/2026",
+      "usuarioId": "a43b",
+      "respuesta": "no xd"
     }
   ]
 }
