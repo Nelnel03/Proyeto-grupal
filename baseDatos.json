@@ -17,6 +17,15 @@
       "estado": "pendiente",
       "fecha": "18/2/2026",
       "usuarioId": "a43b"
+    },
+    {
+      "id": "d850",
+      "tipo": "Otro",
+      "descripcion": "problemas de server",
+      "ubicacion": "calle 5 bario san rafael",
+      "estado": "pendiente",
+      "fecha": "18/2/2026",
+      "usuarioId": "34d7"
     }
   ],
   "usuarios": [
@@ -75,6 +84,22 @@
       "correo": "nana@gmail.com",
       "password": "12345",
       "telefono": "26364025"
+    },
+    {
+      "id": "34d7",
+      "nombre": "nelson",
+      "apellido": "araya",
+      "correo": "nelson@gmail.com",
+      "password": "12",
+      "telefono": "11111111"
+    },
+    {
+      "id": "7e74",
+      "nombre": "gegbe",
+      "apellido": "araya",
+      "correo": "juan@gmail.com",
+      "password": "11",
+      "telefono": "11111111"
     }
   ],
   "administradores": [
@@ -134,7 +159,8 @@
       "cedula": "qdaiodjioqwj",
       "correo": "qwdwqiodhioqw",
       "comentario": "qwdjoqwdiwqj",
-      "fecha": "18/2/2026"
+      "fecha": "18/2/2026",
+      "respuesta": "ok"
     },
     {
       "id": "d795",
@@ -146,6 +172,38 @@
       "fecha": "18/2/2026",
       "usuarioId": "a43b",
       "respuesta": "no xd"
+    },
+    {
+      "id": "ccfe",
+      "nombre": "Brandon",
+      "apellido": "brandon",
+      "cedula": "1111111111111111",
+      "correo": "bchavarriaafwd@gmail.com",
+      "comentario": "tatattaa",
+      "fecha": "18/2/2026",
+      "usuarioId": "ca74",
+      "respuesta": "no"
+    },
+    {
+      "id": "0a29",
+      "nombre": "nelson",
+      "apellido": "araya",
+      "cedula": "11111111111",
+      "correo": "nelson@gmail.com",
+      "comentario": "lhhohohohoh",
+      "fecha": "18/2/2026",
+      "usuarioId": "34d7",
+      "respuesta": "vaya duerma"
+    },
+    {
+      "id": "be70",
+      "nombre": "nelson",
+      "apellido": "araya",
+      "cedula": "1111111111111111111",
+      "correo": "nelsonagmail.com",
+      "comentario": "sgsges",
+      "fecha": "18/2/2026",
+      "usuarioId": "34d7"
     }
   ]
 }
