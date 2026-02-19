@@ -154,8 +154,8 @@
     }
   ],
   "sesionActiva": {
-    "usuarioId": "3ccb",
-    "rol": "usuario"
+    "usuarioId": null,
+    "rol": null
   },
   "mensajesContacto": [
     {
