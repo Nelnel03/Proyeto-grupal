@@ -1,4 +1,4 @@
-import { getDatos } from "./apis.js";
+import { getDatos, BASE_URL } from "./apis.js";
 
 const endpoint = "administradores";
 
@@ -6,33 +6,50 @@ async function obtenerAdmins() {
     return await getDatos(endpoint);
 }
 
+
+
+
+
 const endpointSesion = "sesionActiva";
 
 async function iniciarSesionAdmin(correo, password) {
     const admins = await obtenerAdmins();
-    let adminEncontrado = null;
+    const emailNormalizado = correo.trim().toLowerCase();
+    const passwordNormalizado = password.trim();
 
-    for (let i = 0; i < admins.length; i++) {
-        if (admins[i].correo === correo && admins[i].password === password) {
-            adminEncontrado = admins[i];
-            break;
-        }
-    }
+    const adminEncontrado = admins.find(a =>
+        a.correo.trim().toLowerCase() === emailNormalizado &&
+        a.password.trim() === passwordNormalizado
+    );
 
     if (adminEncontrado) {
-        // Guardar sesión de admin
-        await fetch(`http://localhost:3000/${endpointSesion}`, {
-            method: "PUT",
+        await fetch(`${BASE_URL}/${endpointSesion}`, {
+            method: "PATCH",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 usuarioId: adminEncontrado.id,
                 rol: "admin"
             })
         });
+
+        // Guardar en localStorage
+        localStorage.setItem("usuarioActivo", JSON.stringify({
+            id: adminEncontrado.id,
+            nombre: adminEncontrado.nombre,
+            apellido: adminEncontrado.apellido || "",
+            cedula: adminEncontrado.cedula || "N/A",
+            correo: adminEncontrado.correo,
+            rol: "admin"
+        }));
+
         return adminEncontrado;
     }
 
     return null;
 }
+
+
+
+
 
 export { obtenerAdmins, iniciarSesionAdmin };

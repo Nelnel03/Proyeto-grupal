@@ -5,14 +5,13 @@ const btnEnviar = document.getElementById("btnEnviarMensaje");
 const nombreInput = document.getElementById("nombre");
 const apellidoInput = document.getElementById("apellido");
 const cedulaInput = document.getElementById("cedula");
-const telefonoInput = document.getElementById("telefono");
 const correoInput = document.getElementById("correo");
 const comentarioInput = document.getElementById("comentario");
 
 btnEnviar.addEventListener("click", async () => {
     const sesion = await obtenerSesionActiva();
 
-    if (!sesion || !sesion.usuarioId) {
+    if (!usuarioActivo) {
         Swal.fire({
             icon: 'warning',
             title: 'Acceso Restringido',
@@ -31,18 +30,17 @@ btnEnviar.addEventListener("click", async () => {
         nombre: nombreInput.value.trim(),
         apellido: apellidoInput.value.trim(),
         cedula: cedulaInput.value.trim(),
-        telefono: telefonoInput.value.trim(),
         correo: correoInput.value.trim(),
         comentario: comentarioInput.value.trim(),
         fecha: new Date().toLocaleDateString(),
         usuarioId: sesion.usuarioId
     };
 
-    if (!data.nombre || !data.apellido || !data.cedula || !data.telefono || !data.correo || !data.comentario) {
+    if (!data.nombre || !data.apellido || !data.cedula || !data.correo || !data.comentario) {
         Swal.fire({
             icon: 'warning',
-            title: 'Campos Incompletos',
-            text: 'Por favor, completa todos los espacios del formulario.',
+            title: 'Campo Vacío',
+            text: 'Por favor, escribe un comentario antes de enviar.',
             confirmButtonColor: '#ff8c00'
         });
         return;
@@ -73,9 +71,10 @@ btnEnviar.addEventListener("click", async () => {
         nombreInput.value = "";
         apellidoInput.value = "";
         cedulaInput.value = "";
-        telefonoInput.value = "";
         correoInput.value = "";
         comentarioInput.value = "";
+
+        
 
     } catch (error) {
         Swal.fire({
@@ -84,12 +83,11 @@ btnEnviar.addEventListener("click", async () => {
             text: error.message,
             confirmButtonColor: '#d33'
         });
+
     }
 });
 
-telefonoInput.addEventListener("input", (e) => {
-    e.target.value = e.target.value.replace(/\D/g, "").slice(0, 8);
-});
+
 
 cedulaInput.addEventListener("input", (e) => {
     e.target.value = e.target.value.replace(/\D/g, "").slice(0, 10);

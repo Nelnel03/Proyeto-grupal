@@ -5,7 +5,7 @@
       "tipo": "Bache",
       "descripcion": "Un bache demasiado profundio en el que peligran tanto niños como autos",
       "ubicacion": "Barranca Centro calle 5 avenida 8",
-      "estado": "Resuelto",
+      "estado": "Pendiente",
       "fecha": "17/2/2026",
       "usuarioId": "99bd"
     },
@@ -14,7 +14,7 @@
       "tipo": "Alumbrado",
       "descripcion": "se fue la fucking luz",
       "ubicacion": "calle san joaquin de santo tomas de san rafael",
-      "estado": "pendiente",
+      "estado": "Pendiente",
       "fecha": "18/2/2026",
       "usuarioId": "a43b"
     },
@@ -35,7 +35,8 @@
       "apellido": "Chavarria",
       "correo": "bchavarriaafwd@gmail.com",
       "password": "2411062025",
-      "telefono": "26364026"
+      "telefono": "26364026",
+      "rol": "ciudadano"
     },
     {
       "id": "64fd",
@@ -43,7 +44,8 @@
       "apellido": "canales",
       "correo": "canales@gmail.com",
       "password": "12345",
-      "telefono": "123456789"
+      "telefono": "123456789",
+      "rol": "ciudadano"
     },
     {
       "id": "621e",
@@ -51,7 +53,8 @@
       "apellido": "AAA",
       "correo": "AAAAA",
       "password": "AAAAA",
-      "telefono": "111111111"
+      "telefono": "111111111",
+      "rol": "ciudadano"
     },
     {
       "id": "0d50",
@@ -59,7 +62,8 @@
       "apellido": "Chavarria",
       "correo": "bchava@gmail.com",
       "password": "11112222",
-      "telefono": "62355532"
+      "telefono": "62355532",
+      "rol": "ciudadano"
     },
     {
       "id": "50f7",
@@ -67,7 +71,8 @@
       "apellido": "Chavarria",
       "correo": "bchavarriaafwdgmail.com",
       "password": "11221122",
-      "telefono": "12345432"
+      "telefono": "12345432",
+      "rol": "ciudadano"
     },
     {
       "id": "99bd",
@@ -75,15 +80,8 @@
       "apellido": "Chavarria",
       "correo": "fwd@gmail.com",
       "password": "11221122",
-      "telefono": "12324321"
-    },
-    {
-      "id": "a43b",
-      "nombre": "Nana",
-      "apellido": "Hachiko",
-      "correo": "nana@gmail.com",
-      "password": "12345",
-      "telefono": "26364025"
+      "telefono": "12324321",
+      "rol": "ciudadano"
     },
     {
       "id": "34d7",
@@ -91,7 +89,8 @@
       "apellido": "araya",
       "correo": "nelson@gmail.com",
       "password": "12",
-      "telefono": "11111111"
+      "telefono": "11111111",
+      "rol": "ciudadano"
     },
     {
       "id": "7e74",
@@ -108,14 +107,6 @@
       "correo": "tayro@gmail.com",
       "password": "12345678",
       "telefono": "11111111"
-    },
-    {
-      "id": "3ccb",
-      "nombre": "Samir",
-      "apellido": "García González",
-      "correo": "ygarciafwd@gmail.com",
-      "password": "11112222",
-      "telefono": "11112222"
     }
   ],
   "administradores": [
@@ -126,21 +117,13 @@
       "password": "admin123"
     }
   ],
-  "proyectos": [
+  "funcionarios": [
     {
       "id": "cd51",
       "nombre": "Proyecto la boda ",
       "presupuesto": "10000",
       "fechaInicio": "2026-02-02",
       "descripcion": "arreglo de la calle en la comunidad",
-      "estado": "Planificación"
-    },
-    {
-      "id": "95c2",
-      "nombre": "nuevas señales",
-      "presupuesto": "50000",
-      "fechaInicio": "2026-02-20",
-      "descripcion": "añadir nuevas señales de transito debido a que las anteriores estan muy deterioradas y varios vecinos se robaron altos para vender el perlin",
       "estado": "Planificación"
     }
   ],
@@ -154,8 +137,8 @@
     }
   ],
   "sesionActiva": {
-    "usuarioId": null,
-    "rol": null
+    "usuarioId": "34d7",
+    "rol": "usuario"
   },
   "mensajesContacto": [
     {
@@ -228,16 +211,6 @@
       "comentario": "sgsges",
       "fecha": "18/2/2026",
       "usuarioId": "34d7"
-    },
-    {
-      "id": "83f5",
-      "nombre": "tayro",
-      "apellido": "arce",
-      "cedula": "1111111",
-      "correo": "tayro@gmail.com",
-      "comentario": "dbidbibgdibdi",
-      "fecha": "18/2/2026",
-      "usuarioId": "4b37"
     }
   ]
 }

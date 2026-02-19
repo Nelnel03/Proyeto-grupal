@@ -2,13 +2,26 @@ import { getDatos, getDatosPorId, postDatos, patchDatos, deleteDatos } from "./a
 
 const endpoint = "reportes";
 
+
+
+
+
+
 async function obtenerReportes() {
     return await getDatos(endpoint);
 }
 
+
+
+
+
 async function obtenerReportePorId(id) {
     return await getDatosPorId(endpoint, id);
 }
+
+
+
+
 
 async function crearReporte(data) {
     if (!data.tipo || !data.descripcion || !data.ubicacion) {
@@ -28,12 +41,21 @@ async function crearReporte(data) {
     return await postDatos(endpoint, nuevoReporte);
 }
 
+
+
+
+
 async function actualizarReporte(id, data) {
     return await patchDatos(endpoint, id, data);
 }
 
+
+
+
 async function eliminarReporte(id) {
     return await deleteDatos(endpoint, id);
 }
+
+
 
 export { obtenerReportes, obtenerReportePorId, crearReporte, actualizarReporte, eliminarReporte };

@@ -1,8 +1,14 @@
-import { getDatos, postDatos, getDatosPorId } from "./apis.js";
+import { getDatos, postDatos, getDatosPorId, BASE_URL } from "./apis.js";
 
 const endpoint = "usuarios";
 
 const endpointSesion = "sesionActiva";
+
+
+
+
+
+
 
 const validarEmail = (email) => {
     return String(email)
@@ -12,13 +18,27 @@ const validarEmail = (email) => {
         );
 };
 
+
+
+
+
+
+
 function obtenerUsuarios() {
     return getDatos(endpoint);
 }
 
+
+
+
+
+
+
+
+
 async function registrarUsuario(data) {
-    if (!data.nombre || !data.correo || !data.password || !data.telefono) {
-        throw new Error("Todos los campos (nombre, correo, contraseña, teléfono) son obligatorios");
+    if (!data.nombre || !data.correo || !data.password || !data.telefono || !data.cedula) {
+        throw new Error("Todos los campos (nombre, correo, contraseña, teléfono, cédula) son obligatorios");
     }
 
     if (!validarEmail(data.correo)) {
@@ -36,58 +56,118 @@ async function registrarUsuario(data) {
         throw new Error("El correo ya está registrado");
     }
 
-    return await postDatos(endpoint, data);
+    const nuevoUsuario = {
+        ...data,
+        rol: "ciudadano"
+    };
+
+    return await postDatos(endpoint, nuevoUsuario);
 }
+
+
+
+
+
+
+
+
+
 
 async function iniciarSesion(email, password) {
     const usuarios = await obtenerUsuarios();
-    let usuarioEncontrado = null;
+    const emailNormalizado = email.trim().toLowerCase();
+    const passwordNormalizado = password.trim();
+
 
     for (let i = 0; i < usuarios.length; i++) {
         if (usuarios[i].correo === email && usuarios[i].password === password) {
             usuarioEncontrado = usuarios[i];
+            localStorage.setItem("usuarioLogueado", JSON.stringify(usuarioEncontrado))
             break;
         }
     }
 
+
     if (usuarioEncontrado) {
-        await fetch(`http://localhost:3000/${endpointSesion}`, {
-            method: "PUT",
+        await fetch(`${BASE_URL}/${endpointSesion}`, {
+            method: "PATCH",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 usuarioId: usuarioEncontrado.id,
-                rol: "usuario"
+                rol: usuarioEncontrado.rol
             })
         });
+
+        // Guardar en localStorage para acceso rápido y persistencia de UI
+        localStorage.setItem("usuarioActivo", JSON.stringify({
+            id: usuarioEncontrado.id,
+            nombre: usuarioEncontrado.nombre,
+            apellido: usuarioEncontrado.apellido,
+            cedula: usuarioEncontrado.cedula,
+            correo: usuarioEncontrado.correo,
+            rol: usuarioEncontrado.rol
+        }));
+
         return usuarioEncontrado;
     }
 
     throw new Error("Correo o contraseña incorrectos");
 }
 
+
+
+
+
+
+
 async function obtenerSesionActiva() {
-    const response = await fetch(`http://localhost:3000/${endpointSesion}`);
+    const response = await fetch(`${BASE_URL}/${endpointSesion}`);
     if (!response.ok) return null;
     return await response.json();
 }
 
+
+
+
+
+
+
 async function cerrarSesion() {
+
+    localStorage.removeItem("usuarioLogueado")
     await fetch(`http://localhost:3000/${endpointSesion}`, {
         method: "PUT",
+
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
             usuarioId: null,
             rol: null
         })
     });
+    // Limpiar localStorage
+    localStorage.removeItem("usuarioActivo");
+    return true;
 }
+
+
+
+
+
+
 
 function obtenerUsuarioPorId(id) {
     return getDatosPorId(endpoint, id);
 }
 
+
+
+
+
+
+
+
 async function promoverAdmin(usuario) {
-    const response = await fetch("http://localhost:3000/administradores", {
+    const response = await fetch(`${BASE_URL}/administradores`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -107,8 +187,16 @@ async function promoverAdmin(usuario) {
     return await response.json();
 }
 
+
+
+
+
+
+
+
+
 async function eliminarUsuario(id) {
-    const response = await fetch(`http://localhost:3000/${endpoint}/${id}`, {
+    const response = await fetch(`${BASE_URL}/${endpoint}/${id}`, {
         method: "DELETE"
     });
 
@@ -118,4 +206,31 @@ async function eliminarUsuario(id) {
     return true;
 }
 
-export { obtenerUsuarios, registrarUsuario, iniciarSesion, obtenerSesionActiva, cerrarSesion, obtenerUsuarioPorId, promoverAdmin };
+
+
+
+async function actualizarUsuario(id, data) {
+    const response = await fetch(`${BASE_URL}/${endpoint}/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+    });
+
+    if (!response.ok) {
+        throw new Error("Error al actualizar el usuario");
+    }
+    return await response.json();
+}
+
+
+export {
+    obtenerUsuarios,
+    registrarUsuario,
+    iniciarSesion,
+    obtenerSesionActiva,
+    cerrarSesion,
+    obtenerUsuarioPorId,
+    promoverAdmin,
+    actualizarUsuario,
+    eliminarUsuario
+};

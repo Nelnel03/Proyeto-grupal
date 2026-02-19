@@ -243,9 +243,39 @@
 }
 
 .tarjeta-footer {
-    font-size: 0.9rem;
-    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.btn-detalles {
+    background: transparent;
+    border: 2px solid var(--primary-color);
     color: var(--primary-color);
+    padding: 6px 15px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-detalles:hover {
+    background: var(--primary-color);
+    color: white;
+    transform: scale(1.05);
+}
+
+.detalle-modal hr {
+    margin: 15px 0;
+    border: 0;
+    border-top: 1px solid #eee;
+}
+
+.detalle-modal p {
+    margin-bottom: 10px;
+    line-height: 1.5;
 }
 
 .mensajeVacio {

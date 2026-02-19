@@ -1,5 +1,6 @@
 import { registrarUsuario } from "../services/servicesUsuarios.js";
 
+const cedula = document.getElementById("cedula");
 const nombre = document.getElementById("nombre");
 const apellido = document.getElementById("apellido");
 const email = document.getElementById("email");
@@ -8,7 +9,7 @@ const telefono = document.getElementById("telefono");
 const btn = document.getElementById("btn");
 
 btn.addEventListener("click", async () => {
-    if (!nombre.value || !apellido.value || !email.value || !password.value || !telefono.value) {
+    if (!cedula.value || !nombre.value || !apellido.value || !email.value || !password.value || !telefono.value) {
         Swal.fire({
             icon: 'warning',
             title: 'Campos incompletos',
@@ -46,6 +47,8 @@ btn.addEventListener("click", async () => {
     }
 
     const data = {
+        id: cedula.value,
+        cedula: cedula.value,
         nombre: nombre.value,
         apellido: apellido.value,
         correo: email.value,
