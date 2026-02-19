@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Planillas - Municipalidad de Puntarenas</title>
+    <link rel="stylesheet" href="../styles/global.css">
+    <link rel="stylesheet" href="../styles/home.css">
+    <link rel="stylesheet" href="../styles/planillas.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+
+    <nav class="nav">
+        <img src="../imgs/descarga.png" width="100" height="100" alt="logo">
+        <h1>Municipalidad de Puntarenas</h1>
+        <ul id="navbar-links">
+            <!-- Dinámico -->
+        </ul>
+    </nav>
+
+    <div class="container-planillas">
+        <header class="planillas-header">
+            <h1><i class="ri-team-line"></i> Personal Municipal</h1>
+            <p>Conoce al equipo que trabaja por el desarrollo de Puntarenas.</p>
+        </header>
+
+        <section id="vista-publica-planilla">
+            <div id="contenedor-planilla-publica" class="planilla-grid">
+                <p style="text-align: center;">Cargando personal...</p>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>© 2026 Municipalidad de Puntarenas — Todos los derechos reservados</p>
+    </footer>
+
+    <script src="../js/navbar.js" type="module"></script>
+    <script src="../js/planillas.js" type="module"></script>
+</body>
+
+</html>

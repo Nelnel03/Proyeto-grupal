@@ -2,16 +2,30 @@ import { getDatos, getDatosPorId, postDatos, patchDatos, deleteDatos } from "./a
 
 const endpoint = "proyectos";
 
+
+
+
 async function obtenerProyectos() {
     return await getDatos(endpoint);
 }
+
+
+
+
+
+
 
 async function obtenerProyectoPorId(id) {
     return await getDatosPorId(endpoint, id);
 }
 
+
+
+
+
+
 async function crearProyecto(data) {
-    if (!data.nombre || !data.presupuesto || !data.fechaInicio) {
+    if (!data.nombre || data.presupuesto === undefined || data.presupuesto === null || !data.fechaInicio) {
         throw new Error("Nombre, presupuesto y fecha de inicio son obligatorios");
     }
 
@@ -31,9 +45,16 @@ async function crearProyecto(data) {
     return await postDatos(endpoint, nuevoProyecto);
 }
 
+
+
+
+
 async function actualizarProyecto(id, data) {
     return await patchDatos(endpoint, id, data);
 }
+
+
+
 
 async function eliminarProyecto(id) {
     return await deleteDatos(endpoint, id);

@@ -1,12 +1,36 @@
 
-
 // Importar servicios
 import { obtenerReportes, obtenerReportePorId, actualizarReporte } from "../services/servicesReportes.js";
 import { obtenerProyectos, crearProyecto, actualizarProyecto, eliminarProyecto } from "../services/servicesProyectos.js";
 import { obtenerServicios, crearServicio, actualizarServicio, eliminarServicio } from "../services/servicesServicios.js";
 import { obtenerMensajes, actualizarMensaje } from "../services/servicesContacto.js";
-import { obtenerUsuarios, promoverAdmin } from "../services/servicesUsuarios.js";
+import {
+    obtenerUsuarios,
+    promoverAdmin,
+    obtenerUsuarioPorId,
+    obtenerSesionActiva,
+    actualizarUsuario as actualizarUsuarioService,
+    eliminarUsuario as eliminarUsuarioService
+} from "../services/servicesUsuarios.js";
 import { obtenerAdmins } from "../services/servicesAdmin.js";
+import { obtenerFuncionarios, crearFuncionario, eliminarFuncionario } from "../services/servicesFuncionarios.js";
+import { obtenerPlanillas, crearPlanilla, actualizarPlanilla, eliminarPlanilla } from "../services/servicesPlanillas.js";
+import { obtenerFinanciamientos, crearFinanciamiento, actualizarFinanciamiento, eliminarFinanciamientoLogico as eliminarFinanciamiento } from "../services/servicesFinanciamiento.js";
+import { patchDatos } from "../services/apis.js";
+
+// PROTECCIÓN DE RUTA - Verificar que sea admin
+document.addEventListener("DOMContentLoaded", async () => {
+    try {
+        const sesion = await obtenerSesionActiva();
+        // Solo bloquear si hay una sesion activa con rol diferente a admin
+        if (sesion && sesion.rol && sesion.rol !== "admin") {
+            console.warn("Acceso denegado: Se requiere rol de administrador.");
+            window.location.href = "../pages/home.html";
+        }
+    } catch (e) {
+        console.warn("No se pudo verificar la sesión:", e.message);
+    }
+});
 
 // Referencias DOM - Navegación
 const btnMenuReportes = document.getElementById("btnMenuReportes");
@@ -14,15 +38,19 @@ const btnMenuProyectos = document.getElementById("btnMenuProyectos");
 const btnMenuServicios = document.getElementById("btnMenuServicios");
 const btnMenuMensajes = document.getElementById("btnMenuMensajes");
 const btnMenuUsuarios = document.getElementById("btnMenuUsuarios");
+const btnMenuPlanillas = document.getElementById("btnMenuPlanillas");
+const btnMenuFinanciamiento = document.getElementById("btnMenuFinanciamiento");
 
 const seccionReportes = document.getElementById("seccionReportes");
 const seccionProyectos = document.getElementById("seccionProyectos");
 const seccionServicios = document.getElementById("seccionServicios");
 const seccionMensajes = document.getElementById("seccionMensajes");
 const seccionUsuarios = document.getElementById("seccionUsuarios");
+const seccionPlanillas = document.getElementById("seccionPlanillas");
+const seccionFinanciamiento = document.getElementById("seccionFinanciamiento");
 
-const secciones = [seccionReportes, seccionProyectos, seccionServicios, seccionMensajes, seccionUsuarios];
-const botonesMenu = [btnMenuReportes, btnMenuProyectos, btnMenuServicios, btnMenuMensajes, btnMenuUsuarios];
+const secciones = [seccionReportes, seccionProyectos, seccionServicios, seccionMensajes, seccionUsuarios, seccionPlanillas, seccionFinanciamiento];
+const botonesMenu = [btnMenuReportes, btnMenuProyectos, btnMenuServicios, btnMenuMensajes, btnMenuUsuarios, btnMenuPlanillas, btnMenuFinanciamiento];
 
 // Referencias DOM - Reportes
 const tablaReportes = document.getElementById("tablaReportes");
@@ -63,9 +91,46 @@ const tablaMensajes = document.getElementById("tablaMensajes");
 // Referencias DOM - Usuarios
 const tablaUsuarios = document.getElementById("tablaUsuarios");
 
+// Referencias DOM - Planillas
+const tablaPlanillas = document.getElementById("tablaPlanillas");
+const planUsuarioId = document.getElementById("planUsuarioId");
+const planPuesto = document.getElementById("planPuesto");
+const planDepto = document.getElementById("planDepto");
+const planSalarioBase = document.getElementById("planSalarioBase");
+const planHorasExtra = document.getElementById("planHorasExtra");
+const planRebajos = document.getElementById("planRebajos");
+const planImagen = document.getElementById("planImagen");
+const planDescripcion = document.getElementById("planDescripcion");
+const planNetoPreview = document.getElementById("planNetoPreview");
+const btnCrearPlanilla = document.getElementById("btnCrearPlanilla");
+const btnCancelarPlanilla = document.getElementById("btnCancelarPlanilla");
+const tituloFormPlanilla = document.getElementById("tituloFormPlanilla");
+
+// Referencias DOM - Financiamiento
+const tablaFinanciamientos = document.getElementById("tablaFinanciamientos");
+const finProyecto = document.getElementById("finProyecto");
+const finMonto = document.getElementById("finMonto");
+const finMontoAprobado = document.getElementById("finMontoAprobado");
+const finEntidad = document.getElementById("finEntidad");
+const finFecha = document.getElementById("finFecha");
+const finFechaAprobacion = document.getElementById("finFechaAprobacion");
+const finEstado = document.getElementById("finEstado");
+const finTipo = document.getElementById("finTipo");
+const finDescripcion = document.getElementById("finDescripcion");
+const finResponsable = document.getElementById("finResponsable");
+const finFechaInicio = document.getElementById("finFechaInicio");
+const btnPublicarProyecto = document.getElementById("btnPublicarProyecto");
+const btnGuardarBorrador = document.getElementById("btnGuardarBorrador");
+const btnEliminarSolicitud = document.getElementById("btnEliminarSolicitud");
+const btnCancelarResolucion = document.getElementById("btnCancelarResolucion");
+const formAprobacionFinanciamiento = document.getElementById("formAprobacionFinanciamiento");
+const tituloFormFinanciamiento = document.getElementById("tituloFormFinanciamiento");
+
 // Estado de edición
 let proyectoEditandoId = null;
 let servicioEditandoId = null;
+let planillaEditandoId = null;
+let financiamientoEditandoId = null;
 
 // Lógica de Navegación
 function mostrarSeccion(indice) {
@@ -99,6 +164,16 @@ btnMenuMensajes.addEventListener("click", () => {
 btnMenuUsuarios.addEventListener("click", () => {
     mostrarSeccion(4);
     cargarUsuarios();
+});
+
+btnMenuPlanillas.addEventListener("click", () => {
+    mostrarSeccion(5);
+    cargarSeccionPlanillas();
+});
+
+btnMenuFinanciamiento.addEventListener("click", () => {
+    mostrarSeccion(6);
+    cargarFinanciamientos();
 });
 
 // MÓDULO REPORTES
@@ -679,27 +754,33 @@ async function cargarUsuarios() {
 
         usuarios.forEach((user) => {
             const esAdmin = admins.some(a => a.correo === user.correo);
+            const rolActual = user.rol || "ciudadano";
             const fila = document.createElement("tr");
+
             fila.innerHTML = `
                 <td>${user.id}</td>
                 <td>${user.nombre} ${user.apellido}</td>
                 <td>${user.correo}</td>
-                <td>${user.telefono}</td>
+                <td><span class="badge rol-${rolActual}">${rolActual}</span></td>
                 <td class="acciones">
                     ${esAdmin
-                    ? '<span class="estado-badge estado-resuelto">Administrador</span>'
-                    : `<button class="btn btn-actualizar btn-promover-user" data-id="${user.id}">Promover a Admin</button>`
+                    ? '<span class="estado-badge estado-resuelto">Administrador Sistema</span>'
+                    : `
+                        <button class="btn btn-editar btn-editar-user" data-id="${user.id}" title="Editar Usuario"><i class="ri-edit-line"></i></button>
+                        <button class="btn btn-eliminar btn-eliminar-user" data-id="${user.id}" title="Eliminar Usuario"><i class="ri-delete-bin-line"></i></button>
+                      `
                 }
                 </td>
             `;
             tablaUsuarios.appendChild(fila);
         });
 
-        const botonesPromover = document.querySelectorAll(".btn-promover-user");
-        botonesPromover.forEach((btn) => {
-            btn.addEventListener("click", () => {
-                promoverUsuario(btn.dataset.id);
-            });
+        document.querySelectorAll(".btn-editar-user").forEach(btn => {
+            btn.onclick = () => editarUsuarioHandler(btn.dataset.id);
+        });
+
+        document.querySelectorAll(".btn-eliminar-user").forEach(btn => {
+            btn.onclick = () => eliminarUsuarioHandler(btn.dataset.id);
         });
 
     } catch (error) {
@@ -711,43 +792,465 @@ async function cargarUsuarios() {
     }
 }
 
-async function promoverUsuario(id) {
-    Swal.fire({
-        title: '¿Promover a Administrador?',
-        text: "¿Estás seguro de que deseas otorgar permisos de administrador a este usuario?",
-        icon: 'question',
-        showCancelButton: true,
-        confirmButtonColor: '#ff8c00',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Sí, promover',
-        cancelButtonText: 'Cancelar'
-    }).then(async (result) => {
-        if (result.isConfirmed) {
-            try {
-                const usuarios = await obtenerUsuarios();
-                const usuario = usuarios.find(u => String(u.id) === String(id));
+async function editarUsuarioHandler(id) {
+    try {
+        const user = await obtenerUsuarioPorId(id);
+        if (!user) return;
 
-                if (usuario) {
-                    await promoverAdmin(usuario);
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Éxito',
-                        text: `${usuario.nombre} ahora es administrador.`,
-                        timer: 2000,
-                        showConfirmButton: false
-                    });
-                    cargarUsuarios();
+        const { value: formValues } = await Swal.fire({
+            title: 'Editar Usuario',
+            html: `
+                <div class="swal-form" style="text-align: left;">
+                    <label>Nombre:</label>
+                    <input id="swal-input-nombre" class="swal2-input" value="${user.nombre}">
+                    <label>Apellido:</label>
+                    <input id="swal-input-apellido" class="swal2-input" value="${user.apellido || ''}">
+                    <label>Correo:</label>
+                    <input id="swal-input-correo" class="swal2-input" value="${user.correo}">
+                    <label>Rol:</label>
+                    <select id="swal-input-rol" class="swal2-input">
+                        <option value="ciudadano" ${user.rol === 'ciudadano' ? 'selected' : ''}>Ciudadano</option>
+                        <option value="funcionario" ${user.rol === 'funcionario' ? 'selected' : ''}>Funcionario</option>
+                        <option value="admin" ${user.rol === 'admin' ? 'selected' : ''}>Administrador</option>
+                    </select>
+                </div>
+            `,
+            focusConfirm: false,
+            showCancelButton: true,
+            confirmButtonText: 'Guardar Cambios',
+            cancelButtonText: 'Cancelar',
+            preConfirm: () => {
+                return {
+                    nombre: document.getElementById('swal-input-nombre').value,
+                    apellido: document.getElementById('swal-input-apellido').value,
+                    correo: document.getElementById('swal-input-correo').value,
+                    rol: document.getElementById('swal-input-rol').value
                 }
-            } catch (error) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: error.message
+            }
+        });
+
+        if (formValues) {
+            // Si el rol cambia a admin, usar el servicio de promoción
+            if (formValues.rol === 'admin' && user.rol !== 'admin') {
+                await promoverAdmin(user);
+            } else if (formValues.rol === 'funcionario' && user.rol !== 'funcionario') {
+                // Crear perfil de funcionario si cambia a ese rol
+                await crearFuncionario({
+                    id: `fun-${user.id}`,
+                    nombre: formValues.nombre,
+                    apellido: formValues.apellido,
+                    correo: formValues.correo,
+                    password: user.password,
+                    telefono: user.telefono || ""
+                });
+                await actualizarUsuarioService(id, formValues);
+            } else {
+                await actualizarUsuarioService(id, formValues);
+            }
+
+            Swal.fire('¡Actualizado!', 'El usuario ha sido modificado con éxito.', 'success');
+            cargarUsuarios();
+        }
+    } catch (error) {
+        Swal.fire('Error', 'No se pudo editar el usuario: ' + error.message, 'error');
+    }
+}
+
+async function eliminarUsuarioHandler(id) {
+    const result = await Swal.fire({
+        title: '¿Estás seguro?',
+        text: "Esta acción eliminará al usuario permanentemente.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar'
+    });
+
+    if (result.isConfirmed) {
+        try {
+            await eliminarUsuarioService(id);
+            Swal.fire('Eliminado', 'El usuario ha sido eliminado.', 'success');
+            cargarUsuarios();
+        } catch (error) {
+            Swal.fire('Error', 'No se pudo eliminar: ' + error.message, 'error');
+        }
+    }
+}
+
+// MÓDULO PLANILLAS
+
+async function cargarSeccionPlanillas() {
+    await cargarUsuariosEnSelect();
+    await cargarPlanillas();
+}
+
+async function cargarUsuariosEnSelect() {
+    try {
+        const usuarios = await obtenerUsuarios();
+        planUsuarioId.innerHTML = '<option value="">-- Seleccionar Empleado --</option>';
+        usuarios.forEach(u => {
+            const opt = document.createElement("option");
+            opt.value = u.id;
+            opt.dataset.nombre = `${u.nombre} ${u.apellido}`;
+            opt.textContent = `${u.nombre} ${u.apellido} (${u.correo})`;
+            planUsuarioId.appendChild(opt);
+        });
+    } catch (error) {
+        console.error("Error al cargar usuarios para select:", error);
+    }
+}
+
+async function cargarPlanillas() {
+    try {
+        const planillas = await obtenerPlanillas();
+        tablaPlanillas.innerHTML = "";
+
+        if (planillas.length === 0) {
+            tablaPlanillas.innerHTML = `<tr><td colspan="7" style="text-align:center;">No hay registros salariales</td></tr>`;
+            return;
+        }
+
+        planillas.forEach((p) => {
+            const fila = document.createElement("tr");
+            fila.innerHTML = `
+                <td>${p.empleado}</td>
+                <td>${p.puesto} <br><small>${p.departamento}</small></td>
+                <td>₡${Number(p.salarioBase).toLocaleString()}</td>
+                <td>${p.horasExtra}</td>
+                <td>₡${Number(p.rebajos).toLocaleString()}</td>
+                <td><strong style="color: #27ae60;">₡${Number(p.salarioNeto).toLocaleString('es-CR', { minimumFractionDigits: 2 })}</strong></td>
+                <td class="acciones">
+                    <button class="btn btn-editar btn-editar-planilla" data-id="${p.id}">Editar</button>
+                    <button class="btn btn-eliminar btn-eliminar-planilla" data-id="${p.id}">Eliminar</button>
+                </td>
+            `;
+            tablaPlanillas.appendChild(fila);
+        });
+
+        document.querySelectorAll(".btn-editar-planilla").forEach(btn => {
+            btn.onclick = () => editarPlanillaHandler(btn.dataset.id);
+        });
+        document.querySelectorAll(".btn-eliminar-planilla").forEach(btn => {
+            btn.onclick = () => eliminarPlanillaHandler(btn.dataset.id);
+        });
+
+    } catch (error) {
+        console.error("Error al cargar planillas:", error);
+    }
+}
+
+function calcularSalarioNetoLocal() {
+    const base = parseFloat(planSalarioBase.value) || 0;
+    const extras = parseFloat(planHorasExtra.value) || 0;
+    const rebajos = parseFloat(planRebajos.value) || 0;
+
+    const valorHora = base / 160;
+    const neto = (base + (extras * valorHora * 1.5)) - rebajos;
+    planNetoPreview.textContent = Math.max(0, neto).toLocaleString('es-CR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+[planSalarioBase, planHorasExtra, planRebajos].forEach(input => {
+    input.addEventListener("input", calcularSalarioNetoLocal);
+});
+
+btnCrearPlanilla.addEventListener("click", async () => {
+    const usuarioId = planUsuarioId.value;
+    const empleado = planUsuarioId.options[planUsuarioId.selectedIndex]?.dataset.nombre;
+
+    if (!usuarioId || !planPuesto.value || !planSalarioBase.value) {
+        Swal.fire('Error', 'Empleado, puesto y salario base son obligatorios.', 'warning');
+        return;
+    }
+
+    const base = parseFloat(planSalarioBase.value);
+    const extras = parseFloat(planHorasExtra.value) || 0;
+    const rebajos = parseFloat(planRebajos.value) || 0;
+    const valorHora = base / 160;
+    const neto = (base + (extras * valorHora * 1.5)) - rebajos;
+
+    const data = {
+        usuarioId: usuarioId,
+        empleado: empleado,
+        puesto: planPuesto.value,
+        departamento: planDepto.value,
+        salarioBase: base,
+        horasExtra: extras,
+        rebajos: rebajos,
+        salarioNeto: Math.max(0, neto),
+        imagen: planImagen.value,
+        descripcion: planDescripcion.value
+    };
+
+    try {
+        if (planillaEditandoId) {
+            await actualizarPlanilla(planillaEditandoId, data);
+            Swal.fire('Actualizado', 'Registro salarial actualizado.', 'success');
+        } else {
+            await crearPlanilla(data);
+            Swal.fire('Guardado', 'Registro salarial creado con éxito.', 'success');
+        }
+        limpiarFormularioPlanilla();
+        cargarPlanillas();
+    } catch (error) {
+        Swal.fire('Error', 'No se pudo guardar la planilla.', 'error');
+    }
+});
+
+function limpiarFormularioPlanilla() {
+    planUsuarioId.value = "";
+    planPuesto.value = "";
+    planDepto.value = "";
+    planSalarioBase.value = "";
+    planHorasExtra.value = "0";
+    planRebajos.value = "0";
+    planImagen.value = "";
+    planDescripcion.value = "";
+    planillaEditandoId = null;
+    tituloFormPlanilla.textContent = "Registrar Nueva Planilla";
+    btnCrearPlanilla.textContent = "Guardar Planilla";
+    btnCancelarPlanilla.style.display = "none";
+    calcularSalarioNetoLocal();
+}
+
+async function editarPlanillaHandler(id) {
+    try {
+        const planillas = await obtenerPlanillas();
+        const p = planillas.find(item => String(item.id) === String(id));
+        if (!p) return;
+
+        planUsuarioId.value = p.usuarioId;
+        planPuesto.value = p.puesto;
+        planDepto.value = p.departamento;
+        planSalarioBase.value = p.salarioBase;
+        planHorasExtra.value = p.horasExtra;
+        planRebajos.value = p.rebajos;
+        planImagen.value = p.imagen || "";
+        planDescripcion.value = p.descripcion || "";
+
+        planillaEditandoId = id;
+        tituloFormPlanilla.textContent = "Editando Planilla de: " + p.empleado;
+        btnCrearPlanilla.textContent = "Actualizar Planilla";
+        btnCancelarPlanilla.style.display = "inline-block";
+        calcularSalarioNetoLocal();
+    } catch (error) {
+        console.error("Error al cargar para editar:", error);
+    }
+}
+
+async function eliminarPlanillaHandler(id) {
+    const result = await Swal.fire({
+        title: '¿Eliminar registro?',
+        text: "Se borrará el historial salarial asignado.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, eliminar'
+    });
+
+    if (result.isConfirmed) {
+        try {
+            await eliminarPlanilla(id);
+            Swal.fire('Eliminado', 'El registro ha sido eliminado.', 'success');
+            cargarPlanillas();
+        } catch (error) {
+            Swal.fire('Error', 'No se pudo eliminar el registro.', 'error');
+        }
+    }
+}
+
+btnCancelarPlanilla.addEventListener("click", limpiarFormularioPlanilla);
+
+// MÓDULO FINANCIAMIENTO (Aprobaciones)
+
+async function cargarFinanciamientos() {
+    try {
+        const financiamientos = await obtenerFinanciamientos();
+        tablaFinanciamientos.innerHTML = "";
+
+        if (financiamientos.length === 0) {
+            tablaFinanciamientos.innerHTML = `<tr><td colspan="6" style="text-align:center;">No hay solicitudes activas</td></tr>`;
+            return;
+        }
+
+        financiamientos.forEach((f) => {
+            const fila = document.createElement("tr");
+            fila.innerHTML = `
+                <td><strong>${f.nombre}</strong><br><small>${f.tipo === 'vial' ? '🚙 Vial' : '🏢 Servicio'}</small></td>
+                <td>₡${Number(f.monto_solicitado).toLocaleString()}</td>
+                <td>₡${Number(f.monto_aprobado || 0).toLocaleString()}</td>
+                <td>${f.responsable || f.entidad_financiera || 'TBD'}</td>
+                <td><span class="estado-badge ${getClaseEstadoFin(f.estado)}">${f.estado}</span></td>
+                <td class="acciones">
+                    <button class="btn btn-editar btn-editar-fin" data-id="${f.id}" title="Editar/Procesar"><i class="ri-edit-line"></i></button>
+                    <button class="btn btn-eliminar btn-eliminar-fin" data-id="${f.id}" title="Eliminar"><i class="ri-delete-bin-line"></i></button>
+                </td>
+            `;
+            tablaFinanciamientos.appendChild(fila);
+        });
+
+        document.querySelectorAll(".btn-editar-fin").forEach(btn => {
+            btn.onclick = () => editarFinanciamientoHandler(btn.dataset.id);
+        });
+
+        document.querySelectorAll(".btn-eliminar-fin").forEach(btn => {
+            btn.onclick = () => {
+                const id = btn.dataset.id;
+                confirmarEliminarFinanciamiento(id);
+            };
+        });
+
+    } catch (error) {
+        console.error("Error al cargar financiamientos para admin:", error);
+    }
+}
+
+function getClaseEstadoFin(estado) {
+    switch (estado) {
+        case 'Aprobado': return 'estado-resuelto';
+        case 'Rechazado': return 'estado-inactivo';
+        default: return 'estado-pendiente';
+    }
+}
+
+// Manejo de botones de resolución
+async function procesarResolucionFinanciamiento(esPublicacion) {
+    if (financiamientoEditandoId === null) return;
+
+    const montoAprobado = Number(finMontoAprobado.value) || 0;
+    const montoSolicitado = Number(finMonto.value);
+    const nuevoEstado = esPublicacion ? "Aprobado" : finEstado.value;
+    const nuevoNombre = finProyecto.value;
+    const nuevaDesc = finDescripcion.value;
+    const nuevoTipo = finTipo.value;
+    const responsableFinal = finResponsable.value || "Asignado por Admin";
+    const fechaInicioFinal = finFechaInicio.value || new Date().toISOString().split('T')[0];
+
+    if (esPublicacion && montoAprobado > montoSolicitado) {
+        Swal.fire('Error de Validación', 'El monto aprobado no puede ser mayor al monto solicitado para publicar.', 'error');
+        return;
+    }
+
+    const data = {
+        nombre: nuevoNombre,
+        descripcion: nuevaDesc,
+        tipo: nuevoTipo,
+        monto_aprobado: montoAprobado,
+        estado: nuevoEstado,
+        descripcion_admin: finDescripcion.value,
+        responsable: responsableFinal,
+        fecha_inicio: fechaInicioFinal,
+        fecha_resolucion: new Date().toISOString().split('T')[0]
+    };
+
+    try {
+        await actualizarFinanciamiento(financiamientoEditandoId, data);
+
+        if (esPublicacion) {
+            if (nuevoTipo === "vial") {
+                await crearProyecto({
+                    nombre: nuevoNombre,
+                    presupuesto: montoAprobado,
+                    fechaInicio: fechaInicioFinal,
+                    descripcion: nuevaDesc,
+                    estado: "Planificación"
+                });
+            } else if (nuevoTipo === "servicio") {
+                await crearServicio({
+                    tipo: nuevoNombre,
+                    descripcion: nuevaDesc,
+                    responsable: responsableFinal,
+                    fechaInicio: fechaInicioFinal,
+                    estado: "Activo"
                 });
             }
+            Swal.fire('¡Publicado!', 'El proyecto ha sido publicado en el Inicio.', 'success');
+        } else {
+            Swal.fire('Guardado', 'Los cambios se guardaron como borrador.', 'success');
         }
-    });
+
+        limpiarFormularioFinanciamiento();
+        cargarFinanciamientos();
+    } catch (error) {
+        Swal.fire('Error', 'No se pudo procesar la solicitud: ' + error.message, 'error');
+    }
 }
+
+btnPublicarProyecto.addEventListener("click", () => procesarResolucionFinanciamiento(true));
+btnGuardarBorrador.addEventListener("click", () => procesarResolucionFinanciamiento(false));
+
+btnEliminarSolicitud.addEventListener("click", () => {
+    confirmarEliminarFinanciamiento(financiamientoEditandoId);
+});
+
+async function confirmarEliminarFinanciamiento(id) {
+    const result = await Swal.fire({
+        title: '¿Estás seguro?',
+        text: "¡No podrás revertir esto!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar'
+    });
+
+    if (result.isConfirmed) {
+        try {
+            await eliminarFinanciamiento(id);
+            Swal.fire('Eliminado', 'La solicitud ha sido eliminada.', 'success');
+            limpiarFormularioFinanciamiento();
+            cargarFinanciamientos();
+        } catch (error) {
+            Swal.fire('Error', 'No se pudo eliminar: ' + error.message, 'error');
+        }
+    }
+}
+
+function limpiarFormularioFinanciamiento() {
+    finProyecto.value = "";
+    finMonto.value = "";
+    finMontoAprobado.value = "";
+    finEntidad.value = "";
+    finFecha.value = "";
+    finDescripcion.value = "";
+    finResponsable.value = "";
+    finFechaInicio.value = "";
+    document.getElementById("containerFechaInicio").style.display = "none"; // Hide by default
+    financiamientoEditandoId = null;
+    formAprobacionFinanciamiento.style.display = "none";
+}
+
+async function editarFinanciamientoHandler(id) {
+    try {
+        const financiamientos = await obtenerFinanciamientos();
+        const f = financiamientos.find(item => String(item.id) === String(id));
+        if (!f) return;
+
+        finProyecto.value = f.nombre || f.nombre_proyecto || "";
+        finMonto.value = f.monto_solicitado || 0;
+        finMontoAprobado.value = f.monto_aprobado || 0;
+        finEstado.value = f.estado || "Pendiente";
+        finTipo.value = f.tipo || "vial";
+        finDescripcion.value = f.descripcion || "";
+        finResponsable.value = f.responsable || f.entidad_financiera || "";
+        finFechaInicio.value = f.fecha_inicio || new Date().toISOString().split('T')[0];
+
+        // Mostrar/ocultar fecha de inicio según tipo
+        document.getElementById("containerFechaInicio").style.display = finTipo.value === 'vial' ? 'block' : 'none';
+        finTipo.onchange = () => {
+            document.getElementById("containerFechaInicio").style.display = finTipo.value === 'vial' ? 'block' : 'none';
+        };
+
+        financiamientoEditandoId = id;
+        formAprobacionFinanciamiento.style.display = "block";
+        formAprobacionFinanciamiento.scrollIntoView({ behavior: 'smooth' });
+    } catch (error) {
+        console.error("Error al cargar para resolución:", error);
+    }
+}
+
+btnCancelarResolucion.addEventListener("click", limpiarFormularioFinanciamiento);
 
 // Inicialización
 cargarReportes();

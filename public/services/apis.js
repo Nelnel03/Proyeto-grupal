@@ -1,5 +1,7 @@
 const BASE_URL = "http://localhost:3000";
 
+
+
 async function getDatos(endpoint) {
     const response = await fetch(`${BASE_URL}/${endpoint}`);
     if (!response.ok) {
@@ -9,6 +11,11 @@ async function getDatos(endpoint) {
     return response.json();
 }
 
+
+
+
+
+
 async function getDatosPorId(endpoint, id) {
     const response = await fetch(`${BASE_URL}/${endpoint}/${id}`);
     if (!response.ok) {
@@ -17,6 +24,9 @@ async function getDatosPorId(endpoint, id) {
     }
     return response.json();
 }
+
+
+
 
 async function postDatos(endpoint, data) {
     const response = await fetch(`${BASE_URL}/${endpoint}`, {
@@ -33,6 +43,10 @@ async function postDatos(endpoint, data) {
     return await response.json();
 }
 
+
+
+
+
 async function patchDatos(endpoint, id, data) {
     const response = await fetch(`${BASE_URL}/${endpoint}/${id}`, {
         method: "PATCH",
@@ -48,6 +62,10 @@ async function patchDatos(endpoint, id, data) {
     return await response.json();
 }
 
+
+
+
+
 async function deleteDatos(endpoint, id) {
     const response = await fetch(`${BASE_URL}/${endpoint}/${id}`, {
         method: "DELETE",
@@ -59,4 +77,7 @@ async function deleteDatos(endpoint, id) {
     return true;
 }
 
-export { getDatos, getDatosPorId, postDatos, patchDatos, deleteDatos };
+
+
+
+export { getDatos, getDatosPorId, postDatos, patchDatos, deleteDatos, BASE_URL };

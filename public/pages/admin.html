@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="../styles/global.css">
     <link rel="stylesheet" href="../styles/admin.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.css">
 </head>
 
 <body>
@@ -30,6 +31,12 @@
         <button id="btnMenuServicios">Gestión de Servicios Públicos</button>
         <button id="btnMenuMensajes">Mensajes de Contacto</button>
         <button id="btnMenuUsuarios">Gestión de Usuarios</button>
+        <button id="btnMenuPlanillas">Gestión de Salarios</button>
+        <button id="btnMenuFinanciamiento">Solicitudes Proyectos (Funcionarios)</button>
+        <hr style="opacity: 0.1; margin: 10px 0;">
+        <a href="../pages/financiamiento.html" class="sidebar-link">
+            <i class="ri-user-fill"></i> Vista Funcionario (Solicitudes)
+        </a>
     </aside>
 
     <div class="main">
@@ -163,6 +170,153 @@
                 </thead>
                 <tbody id="tablaMensajes">
                     <!-- Los mensajes se cargarán aquí -->
+                </tbody>
+            </table>
+        </section>
+
+        <section id="seccionPlanillas" class="seccion">
+            <hr>
+            <h1>Gestión de Salarios</h1>
+            <p>Administra los pagos y salarios de los empleados municipales.</p>
+
+            <div class="formulario">
+                <h3 id="tituloFormPlanilla">Registrar Nueva Planilla</h3>
+                <div class="input-container">
+                    <label for="planUsuarioId">Empleado</label>
+                    <select id="planUsuarioId">
+                        <option value="">-- Seleccionar Empleado --</option>
+                    </select>
+                </div>
+                <div class="input-container">
+                    <label for="planPuesto">Puesto</label>
+                    <input type="text" id="planPuesto" placeholder="Ej: Operario">
+                </div>
+                <div class="input-container">
+                    <label for="planDepto">Departamento</label>
+                    <input type="text" id="planDepto" placeholder="Ej: Servicios Generales">
+                </div>
+                <div class="input-container">
+                    <label for="planSalarioBase">Salario Base (₡)</label>
+                    <input type="number" id="planSalarioBase" placeholder="0">
+                </div>
+                <div class="input-container">
+                    <label for="planHorasExtra">Horas Extra</label>
+                    <input type="number" id="planHorasExtra" value="0">
+                </div>
+                <div class="input-container">
+                    <label for="planRebajos">Rebajos (₡)</label>
+                    <input type="number" id="planRebajos" value="0">
+                </div>
+                <div class="input-container">
+                    <label for="planImagen">URL de Imagen</label>
+                    <input type="text" id="planImagen" placeholder="https://ejemplo.com/foto.jpg">
+                </div>
+                <div class="input-container">
+                    <label for="planDescripcion">Descripción de Funciones</label>
+                    <textarea id="planDescripcion"
+                        placeholder="Describe brevemente las labores del empleado"></textarea>
+                </div>
+
+                <div class="salario-neto-preview"
+                    style="background: #f0f0f0; padding: 10px; border-radius: 5px; margin: 10px 0;">
+                    <strong>Salario Neto: ₡<span id="planNetoPreview">0.00</span></strong>
+                </div>
+
+                <div class="acciones">
+                    <button id="btnCrearPlanilla" class="btn btn-crear">Guardar Planilla</button>
+                    <button id="btnCancelarPlanilla" class="btn btn-cancelar" style="display:none;">Cancelar</button>
+                </div>
+            </div>
+            <hr>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Empleado</th>
+                        <th>Puesto / Depto</th>
+                        <th>Salario Base</th>
+                        <th>H. Extra</th>
+                        <th>Rebajos</th>
+                        <th>Neto</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaPlanillas">
+                </tbody>
+            </table>
+        </section>
+
+        <section id="seccionFinanciamiento" class="seccion">
+            <hr>
+            <h1>Control de Aprobaciones - Financiamiento</h1>
+            <p>Vista exclusiva para administradores. Apruebe o rechace solicitudes y asigne el monto final financiado.
+            </p>
+
+            <div class="formulario" id="formAprobacionFinanciamiento" style="display: none;">
+                <h3 id="tituloFormFinanciamiento">Procesar Solicitud</h3>
+                <div class="input-container">
+                    <label>Nombre del Proyecto / Servicio (Editable):</label>
+                    <input type="text" id="finProyecto">
+                </div>
+                <div class="input-container">
+                    <label for="finTipo">Tipo de Resultado Final:</label>
+                    <select id="finTipo">
+                        <option value="vial">Proyecto Vial</option>
+                        <option value="servicio">Servicio Público</option>
+                    </select>
+                </div>
+                <div class="input-container">
+                    <label>Monto Solicitado (₡):</label>
+                    <input type="number" id="finMonto" disabled>
+                </div>
+                <div class="input-container">
+                    <label for="finMontoAprobado">Monto Aprobado Final (₡)</label>
+                    <input type="number" id="finMontoAprobado" placeholder="0">
+                    <small style="color: #666;">No puede exceder el monto solicitado.</small>
+                </div>
+                <div class="input-container">
+                    <label for="finEstado">Estado de la Resolución</label>
+                    <select id="finEstado">
+                        <option value="Pendiente">Pendiente</option>
+                        <option value="Aprobado">Aprobado</option>
+                        <option value="Rechazado">Rechazado</option>
+                    </select>
+                </div>
+                <div class="input-container">
+                    <label for="finResponsable">Entidad Responsable / Ejecutora:</label>
+                    <input type="text" id="finResponsable" placeholder="Ej: Ministerio de Salud, CONAVI, etc.">
+                </div>
+                <div class="input-container" id="containerFechaInicio">
+                    <label for="finFechaInicio">Fecha de Inicio Estimada:</label>
+                    <input type="date" id="finFechaInicio">
+                </div>
+
+                <div class="input-container">
+                    <label for="finDescripcion">Descripción Detallada (Para Publicación):</label>
+                    <textarea id="finDescripcion" placeholder="Justificación de la resolución..."></textarea>
+                </div>
+
+                <div class="acciones" style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button id="btnPublicarProyecto" class="btn btn-crear"
+                        style="flex: 2; background-color: #27ae60;">🚀 Publicar en Inicio</button>
+                    <button id="btnGuardarBorrador" class="btn btn-actualizar" style="flex: 1;">💾 Guardar
+                        Borrador</button>
+                    <button id="btnEliminarSolicitud" class="btn btn-eliminar" style="flex: 1;">🗑️ Eliminar</button>
+                    <button id="btnCancelarResolucion" class="btn btn-cancelar" style="flex: 1;">Cerrar</button>
+                </div>
+            </div>
+            <hr>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Proyecto</th>
+                        <th>Solicitado</th>
+                        <th>Aprobado</th>
+                        <th>Entidad</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaFinanciamientos">
                 </tbody>
             </table>
         </section>

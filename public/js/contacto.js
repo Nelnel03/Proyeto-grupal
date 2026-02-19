@@ -2,16 +2,12 @@ import { enviarMensaje } from "../services/servicesContacto.js";
 import { obtenerSesionActiva } from "../services/servicesUsuarios.js";
 
 const btnEnviar = document.getElementById("btnEnviarMensaje");
-const nombreInput = document.getElementById("nombre");
-const apellidoInput = document.getElementById("apellido");
-const cedulaInput = document.getElementById("cedula");
-const correoInput = document.getElementById("correo");
 const comentarioInput = document.getElementById("comentario");
 
 btnEnviar.addEventListener("click", async () => {
-    const sesion = await obtenerSesionActiva();
+    const usuarioActivo = JSON.parse(localStorage.getItem("usuarioActivo"));
 
-    if (!sesion || !sesion.usuarioId) {
+    if (!usuarioActivo) {
         Swal.fire({
             icon: 'warning',
             title: 'Acceso Restringido',
@@ -26,36 +22,27 @@ btnEnviar.addEventListener("click", async () => {
         return;
     }
 
-    const data = {
-        nombre: nombreInput.value.trim(),
-        apellido: apellidoInput.value.trim(),
-        cedula: cedulaInput.value.trim(),
-        correo: correoInput.value.trim(),
-        comentario: comentarioInput.value.trim(),
-        fecha: new Date().toLocaleDateString(),
-        usuarioId: sesion.usuarioId
-    };
+    const comentario = comentarioInput.value.trim();
 
-    if (!data.nombre || !data.apellido || !data.cedula || !data.correo || !data.comentario) {
+    if (!comentario) {
         Swal.fire({
             icon: 'warning',
-            title: 'Campos Incompletos',
-            text: 'Por favor, completa todos los espacios del formulario.',
+            title: 'Campo Vacío',
+            text: 'Por favor, escribe un comentario antes de enviar.',
             confirmButtonColor: '#ff8c00'
         });
         return;
     }
 
-    const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if (!emailRegex.test(data.correo.toLowerCase())) {
-        Swal.fire({
-            icon: 'error',
-            title: 'Correo Inválido',
-            text: 'La dirección de correo electrónico no es válida.',
-            confirmButtonColor: '#d33'
-        });
-        return;
-    }
+    const data = {
+        nombre: usuarioActivo.nombre,
+        apellido: usuarioActivo.apellido,
+        cedula: usuarioActivo.id, // En el login guardamos id como cedula
+        correo: usuarioActivo.correo,
+        comentario: comentario,
+        fecha: new Date().toLocaleDateString(),
+        usuarioId: usuarioActivo.id
+    };
 
     try {
         await enviarMensaje(data);
@@ -68,10 +55,6 @@ btnEnviar.addEventListener("click", async () => {
         });
 
         // Limpiar formulario
-        nombreInput.value = "";
-        apellidoInput.value = "";
-        cedulaInput.value = "";
-        correoInput.value = "";
         comentarioInput.value = "";
 
     } catch (error) {

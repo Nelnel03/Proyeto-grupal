@@ -34,11 +34,10 @@ async function cargarProyectos() {
             tarjeta.className = "tarjeta-proyecto";
             tarjeta.innerHTML = `
                 <div class="tarjeta-titulo">${proyecto.nombre}</div>
-                <div class="tarjeta-body">${proyecto.descripcion || "Sin descripción"}</div>
+                <div class="tarjeta-body">${proyecto.descripcion ? proyecto.descripcion.substring(0, 100) + '...' : "Sin descripción"}</div>
                 <div class="tarjeta-footer">
-                    <p>Presupuesto: ₡${Number(proyecto.presupuesto).toLocaleString()}</p>
-                    <p>Fecha de inicio: ${proyecto.fechaInicio}</p>
                     <span class="estado-badge">${proyecto.estado}</span>
+                    <button class="btn-detalles" onclick="verDetallesProyecto('${proyecto.id}')">Más detalles</button>
                 </div>
             `;
             contenedorProyectos.appendChild(tarjeta);
@@ -64,10 +63,10 @@ async function cargarServicios() {
             tarjeta.className = "tarjeta-servicio";
             tarjeta.innerHTML = `
                 <div class="tarjeta-titulo">${servicio.tipo}</div>
-                <div class="tarjeta-body">${servicio.descripcion || "Sin descripción"}</div>
+                <div class="tarjeta-body">${servicio.descripcion ? servicio.descripcion.substring(0, 100) + '...' : "Sin descripción"}</div>
                 <div class="tarjeta-footer">
-                    <p>Responsable: ${servicio.responsable}</p>
                     <span class="estado-badge">${servicio.estado}</span>
+                    <button class="btn-detalles" onclick="verDetallesServicio('${servicio.id}')">Más detalles</button>
                 </div>
             `;
             contenedorServicios.appendChild(tarjeta);
@@ -129,6 +128,58 @@ btnEnviarReporte.addEventListener("click", async () => {
         });
     }
 });
+
+// Detalle de Proyectos
+window.verDetallesProyecto = async (id) => {
+    try {
+        const proyectos = await obtenerProyectos();
+        const p = proyectos.find(item => String(item.id) === String(id));
+        if (!p) return;
+
+        Swal.fire({
+            title: p.nombre,
+            html: `
+                <div class="detalle-modal" style="text-align: left;">
+                    <p><strong>Descripción:</strong><br>${p.descripcion || 'Sin descripción'}</p>
+                    <hr>
+                    <p><strong>Presupuesto Asignado:</strong> ₡${Number(p.presupuesto).toLocaleString()}</p>
+                    <p><strong>Fecha de Inicio:</strong> ${p.fechaInicio}</p>
+                    <p><strong>Estado Actual:</strong> <span class="estado-badge">${p.estado}</span></p>
+                </div>
+            `,
+            confirmButtonText: 'Cerrar',
+            confirmButtonColor: '#3498db'
+        });
+    } catch (e) {
+        console.error(e);
+    }
+};
+
+// Detalle de Servicios
+window.verDetallesServicio = async (id) => {
+    try {
+        const servicios = await obtenerServicios();
+        const s = servicios.find(item => String(item.id) === String(id));
+        if (!s) return;
+
+        Swal.fire({
+            title: s.tipo,
+            html: `
+                <div class="detalle-modal" style="text-align: left;">
+                    <p><strong>Descripción del Servicio:</strong><br>${s.descripcion || 'Sin descripción'}</p>
+                    <hr>
+                    <p><strong>Responsable / Entidad:</strong> ${s.responsable}</p>
+                    <p><strong>Fecha de Inicio:</strong> ${s.fechaInicio || 'TBD'}</p>
+                    <p><strong>Estado:</strong> <span class="estado-badge">${s.estado}</span></p>
+                </div>
+            `,
+            confirmButtonText: 'Cerrar',
+            confirmButtonColor: '#2ecc71'
+        });
+    } catch (e) {
+        console.error(e);
+    }
+};
 
 // Lógica para secciones expandibles
 document.querySelectorAll(".card-expandible").forEach(card => {

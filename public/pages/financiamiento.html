@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal de Funcionarios - Municipalidad</title>
+
+    <link rel="stylesheet" href="../styles/global.css">
+    <link rel="stylesheet" href="../styles/admin.css"> <!-- Reusing admin styles for consistency -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.css">
+</head>
+
+<body>
+
+    <div class="nav">
+        <div class="nav-header">
+            <img src="../imgs/descarga.png" alt="Logo Municipalidad" class="nav-logo">
+            <h1>Municipalidad de Puntarenas</h1>
+        </div>
+        <ul class="nav-links">
+            <li><a href="../pages/home.html">Inicio</a></li>
+            <li><a href="#" id="btnLogout">Cerrar Sesión</a></li>
+        </ul>
+    </div>
+
+    <aside class="sidebar">
+        <h2>Panel Funcionario</h2>
+        <button id="btnVerReportes" class="active">Reportes Ciudadanos</button>
+        <button id="btnMisSolicitudes">Mis Solicitudes de Proyecto</button>
+    </aside>
+
+    <div class="main">
+
+        <!-- Sección de Reportes -->
+        <section id="seccionReportes" class="seccion activa">
+            <hr>
+            <h1>Reportes de la Comunidad</h1>
+            <p>Selecciona un reporte para iniciar una solicitud de proyecto.</p>
+
+            <div class="filtros-container"
+                style="display: flex; gap: 15px; background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px; align-items: flex-end;">
+                <div class="input-container" style="margin: 0; flex: 1;">
+                    <label>Filtrar por Categoría:</label>
+                    <select id="filtroTipo">
+                        <option value="">Todas las categorías</option>
+                        <option value="Bache">Vial (Baches)</option>
+                        <option value="Alumbrado">Alumbrado</option>
+                        <option value="Limpieza">Limpieza</option>
+                        <option value="Ambiental">Ambiental</option>
+                        <option value="Otro">Otro</option>
+                    </select>
+                </div>
+                <div class="input-container" style="margin: 0; flex: 2;">
+                    <label>Buscar por Ubicación:</label>
+                    <input type="text" id="filtroTexto" placeholder="Ej: Barranca Centro...">
+                </div>
+                <button id="btnLimpiarFiltros" class="btn btn-cancelar"
+                    style="height: 40px; margin-bottom: 5px;">Limpiar</button>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Tipo</th>
+                        <th>Descripción</th>
+                        <th>Ubicación</th>
+                        <th>Estado</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaReportes">
+                    <!-- Dinámico -->
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Sección de Solicitudes -->
+        <section id="seccionSolicitudes" class="seccion">
+            <hr>
+            <h1>Mis Solicitudes de Proyecto</h1>
+
+            <div class="formulario" id="formSolicitud" style="display: none;">
+                <h3 id="tituloForm">Nueva Solicitud</h3>
+                <div class="input-container">
+                    <label>Reporte Relacionado (ID):</label>
+                    <input type="text" id="solReporteId" readonly>
+                </div>
+                <div class="input-container">
+                    <label for="solTipo">Tipo de Proyecto</label>
+                    <select id="solTipo">
+                        <option value="vial">Proyecto Vial</option>
+                        <option value="servicio">Servicio Público</option>
+                    </select>
+                </div>
+                <div class="input-container">
+                    <label for="solNombre">Nombre del Proyecto / Servicio</label>
+                    <input type="text" id="solNombre" placeholder="Ej: Pavimentación Calle 5">
+                </div>
+                <div class="input-container">
+                    <label for="solDescripcion">Descripción Detallada</label>
+                    <textarea id="solDescripcion" placeholder="Describa la necesidad y solución..."></textarea>
+                </div>
+                <div id="camposVial" class="sub-form">
+                    <div class="input-container">
+                        <label for="solMonto">Presupuesto Sugerido (₡)</label>
+                        <input type="number" id="solMonto" placeholder="0">
+                    </div>
+                </div>
+                <div id="camposServicio" class="sub-form" style="display:none;">
+                    <div class="input-container">
+                        <label for="solResponsable">Responsable Sugerido</label>
+                        <input type="text" id="solResponsable" placeholder="Ej: Departamento de Limpieza">
+                    </div>
+                </div>
+                <div class="acciones">
+                    <button id="btnGuardarSolicitud" class="btn btn-crear">Enviar al Admin</button>
+                    <button id="btnCancelarSolicitud" class="btn btn-cancelar">Cancelar</button>
+                </div>
+            </div>
+            <hr>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Proyecto</th>
+                        <th>Tipo</th>
+                        <th>Estado</th>
+                        <th>Monto Solicitado</th>
+                        <th>Resolución</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaSolicitudes">
+                    <!-- Dinámico -->
+                </tbody>
+            </table>
+        </section>
+
+    </div>
+
+    <footer>
+        <p>© 2026 Municipalidad de Puntarenas — Todos los derechos reservados</p>
+    </footer>
+
+    <script src="../js/financiamiento.js" type="module"></script>
+</body>
+
+</html>

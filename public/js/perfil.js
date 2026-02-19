@@ -22,6 +22,11 @@ async function cargarPerfil() {
             return;
         }
 
+        if (sesion.rol === 'funcionario') {
+            window.location.href = "../pages/financiamiento.html";
+            return;
+        }
+
         const usuario = await obtenerUsuarioPorId(sesion.usuarioId);
         if (usuario) {
             nombreUsuario.textContent = `${usuario.nombre} ${usuario.apellido}`;
@@ -86,6 +91,7 @@ async function cargarPerfil() {
                 contenedorConsultas.appendChild(div);
             });
         }
+
 
     } catch (error) {
         console.error("Error al cargar perfil:", error);

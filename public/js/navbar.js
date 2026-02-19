@@ -7,11 +7,16 @@ async function actualizarNavbar() {
     const sesion = await obtenerSesionActiva();
 
     if (sesion && sesion.usuarioId) {
+        let perfilLink = "../pages/perfil.html";
+        if (sesion.rol === 'admin') perfilLink = "../pages/admin.html";
+        if (sesion.rol === 'funcionario') perfilLink = "../pages/financiamiento.html";
+
         navbarLinks.innerHTML = `
             <li><a href="../pages/home.html">Inicio</a></li>
             <li><a href="../pages/sobreNosotros.html">Nosotros</a></li>
             <li><a href="../pages/contacto.html">Contacto</a></li>
-            <li><a href="../pages/perfil.html">Mi Perfil</a></li>
+            <li><a href="../pages/planillas.html">Planilla</a></li>
+            <li><a href="${perfilLink}">Mi Perfil</a></li>
             <li><a href="../pages/login.html" id="btnCerrarSesionShared">Cerrar Sesión</a></li>
         `;
 
