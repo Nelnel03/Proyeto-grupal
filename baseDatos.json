@@ -5,7 +5,7 @@
       "tipo": "Bache",
       "descripcion": "Un bache demasiado profundio en el que peligran tanto niños como autos",
       "ubicacion": "Barranca Centro calle 5 avenida 8",
-      "estado": "Resuelto",
+      "estado": "Pendiente",
       "fecha": "17/2/2026",
       "usuarioId": "99bd"
     },
@@ -26,15 +26,6 @@
       "estado": "pendiente",
       "fecha": "18/2/2026",
       "usuarioId": "34d7"
-    },
-    {
-      "id": "a554",
-      "tipo": "Alumbrado",
-      "descripcion": "una farola no esta funcionando bien",
-      "ubicacion": "calle san juan chiquito",
-      "estado": "pendiente",
-      "fecha": "19/2/2026",
-      "usuarioId": "ca74"
     }
   ],
   "usuarios": [
@@ -107,8 +98,7 @@
       "apellido": "araya",
       "correo": "juan@gmail.com",
       "password": "11",
-      "telefono": "11111111",
-      "rol": "ciudadano"
+      "telefono": "11111111"
     }
   ],
   "administradores": [
@@ -116,35 +106,32 @@
       "id": "adm1",
       "nombre": "Admin",
       "correo": "admin@escazu.go.cr",
-      "password": "admin123",
-      "rol": "admin"
+      "password": "admin123"
     }
   ],
   "funcionarios": [
     {
-      "id": "a43b",
-      "nombre": "Nana",
-      "apellido": "Hachiko",
-      "correo": "nana@gmail.com",
-      "password": "12345",
-      "telefono": "26364025",
-      "rol": "funcionario"
+      "id": "cd51",
+      "nombre": "Proyecto la boda ",
+      "presupuesto": "10000",
+      "fechaInicio": "2026-02-02",
+      "descripcion": "arreglo de la calle en la comunidad",
+      "estado": "Planificación"
     }
   ],
-  "proyectos": [],
   "serviciosPublicos": [
     {
-      "id": "b309",
-      "tipo": "Arreglo del server",
-      "descripcion": "Basado en el reporte d850: problemas de server y se necesita solucionar propongo blabalablsabalababa",
-      "responsable": "Asignado por Admin",
+      "id": "4e2b",
+      "tipo": "Limpieza ",
+      "descripcion": "limpieza de parque",
+      "responsable": "Unamu",
       "estado": "Activo"
     }
   ],
+  "serviciosPublicos": [],
   "sesionActiva": {
-    "id": "current",
-    "usuarioId": "ca74",
-    "rol": "ciudadano"
+    "usuarioId": "adm1",
+    "rol": "admin"
   },
   "mensajesContacto": [
     {
@@ -217,124 +204,6 @@
       "comentario": "sgsges",
       "fecha": "18/2/2026",
       "usuarioId": "34d7"
-    },
-    {
-      "id": "c2dd",
-      "nombre": "Brandon",
-      "apellido": "Chavarria",
-      "cedula": "ca74",
-      "correo": "bchavarriaafwd@gmail.com",
-      "comentario": "jskkjqefra",
-      "fecha": "19/2/2026",
-      "usuarioId": "ca74"
-    }
-  ],
-  "planillas": [
-    {
-      "id": "dd95",
-      "usuarioId": "621e",
-      "empleado": "NELSON AAA",
-      "puesto": "jefe ",
-      "departamento": "cocina",
-      "salarioBase": 200000,
-      "horasExtra": 20,
-      "rebajos": 4,
-      "salarioNeto": 237496,
-      "imagen": "",
-      "descripcion": "skjdkjasdkjadjasklfakas"
-    }
-  ],
-  "financiamientos": [
-    {
-      "id": "f4fd",
-      "reporteId": "1b71",
-      "tipo": "vial",
-      "nombre": "ewtkwrtitqrkotqtiqe",
-      "descripcion": ": se fue la fucking luz",
-      "monto_solicitado": 23,
-      "responsable": "Admin Vial",
-      "monto_aprobado": 0,
-      "estado": "Aprobado",
-      "fecha_solicitud": "2026-02-19",
-      "fecha_resolucion": "2026-02-19",
-      "activo": false
-    },
-    {
-      "id": "bbde",
-      "reporteId": "1b71",
-      "tipo": "vial",
-      "nombre": "34tergqe",
-      "descripcion": "Basado en el 321b71: se fue la fucking luz",
-      "monto_solicitado": null,
-      "responsable": "Admin Vial",
-      "monto_aprobado": 0,
-      "estado": "Aprobado",
-      "fecha_solicitud": "2026-02-19",
-      "fecha_resolucion": "2026-02-19",
-      "activo": false,
-      "descripcion_admin": "Basado en el 321b71: se fue la fucking luz"
-    },
-    {
-      "id": "7606",
-      "reporteId": "b390",
-      "tipo": "servicio",
-      "nombre": "Aguas",
-      "descripcion": "Basado en el reporte b390: Un bache demasiado profundio en el que peligran tanto niños como autos por un monto de dnajdhasiu",
-      "monto_solicitado": 0,
-      "responsable": "whqdeqijhidsjkjqd",
-      "monto_aprobado": 2000000,
-      "estado": "Pendiente",
-      "fecha_solicitud": "2026-02-19",
-      "fecha_resolucion": "2026-02-19",
-      "activo": false,
-      "descripcion_admin": "Basado en el reporte b390: Un bache demasiado profundio en el que peligran tanto niños como autos por un monto de dnajdhasiu"
-    },
-    {
-      "id": "d03f",
-      "reporteId": "d850",
-      "tipo": "servicio",
-      "nombre": "Arreglo del server",
-      "descripcion": "Basado en el reporte d850: problemas de server y se necesita solucionar propongo blabalablsabalababa",
-      "monto_solicitado": 0,
-      "responsable": "departamento de arreglo de servers",
-      "monto_aprobado": 0,
-      "estado": "Aprobado",
-      "fecha_solicitud": "2026-02-19",
-      "fecha_resolucion": "2026-02-19",
-      "activo": true,
-      "descripcion_admin": "Basado en el reporte d850: problemas de server y se necesita solucionar propongo blabalablsabalababa"
-    },
-    {
-      "id": "af7e",
-      "reporteId": "1b71",
-      "tipo": "servicio",
-      "nombre": "",
-      "descripcion": " se fue lajuhriuehr",
-      "monto_solicitado": 0,
-      "responsable": "ice",
-      "monto_aprobado": 0,
-      "estado": "Aprobado",
-      "fecha_solicitud": "2026-02-19",
-      "fecha_resolucion": "2026-02-19",
-      "activo": true,
-      "descripcion_admin": " se fue lajuhriuehr",
-      "fecha_inicio": "2026-02-19"
-    },
-    {
-      "id": "5d0b",
-      "reporteId": "b390",
-      "tipo": "vial",
-      "nombre": "",
-      "descripcion": "Basado en el reporte b390: Un bache demasiado profundio en el que peligran tanto niños como autos",
-      "monto_solicitado": 2312213314,
-      "responsable": "Admin Vial",
-      "monto_aprobado": 0,
-      "estado": "Aprobado",
-      "fecha_solicitud": "2026-02-19",
-      "fecha_resolucion": "2026-02-19",
-      "activo": true,
-      "descripcion_admin": "Basado en el reporte b390: Un bache demasiado profundio en el que peligran tanto niños como autos",
-      "fecha_inicio": "2026-02-19"
     }
   ]
 }

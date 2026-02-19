@@ -3,7 +3,7 @@ import { postDatos, getDatos, patchDatos } from "./apis.js";
 const endpoint = "mensajesContacto";
 
 async function enviarMensaje(data) {
-    if (!data.nombre || !data.apellido || !data.cedula || !data.correo || !data.comentario) {
+    if (!data.cedula || !data.comentario) {
         throw new Error("Por favor completa todos los campos requeridos.");
     }
     return await postDatos(endpoint, data);
