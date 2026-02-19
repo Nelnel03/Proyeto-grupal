@@ -5,7 +5,7 @@
       "tipo": "Bache",
       "descripcion": "Un bache demasiado profundio en el que peligran tanto niños como autos",
       "ubicacion": "Barranca Centro calle 5 avenida 8",
-      "estado": "Resuelto",
+      "estado": "Pendiente",
       "fecha": "17/2/2026",
       "usuarioId": "99bd"
     },
@@ -26,6 +26,15 @@
       "estado": "pendiente",
       "fecha": "18/2/2026",
       "usuarioId": "34d7"
+    },
+    {
+      "id": "b4c4",
+      "tipo": "Basura",
+      "descripcion": "jh,khggyhg",
+      "ubicacion": "kjgyyjgy",
+      "estado": "pendiente",
+      "fecha": "18/2/2026",
+      "usuarioId": null
     }
   ],
   "usuarios": [
@@ -108,6 +117,14 @@
       "correo": "tayro@gmail.com",
       "password": "12345678",
       "telefono": "11111111"
+    },
+    {
+      "id": "de64",
+      "nombre": "nelson",
+      "apellido": "araya",
+      "correo": "nnelson@gmail.com",
+      "password": "12345678",
+      "telefono": "12345678"
     }
   ],
   "administradores": [
@@ -116,6 +133,12 @@
       "nombre": "Admin",
       "correo": "admin@escazu.go.cr",
       "password": "admin123"
+    },
+    {
+      "id": "adm-6a6b",
+      "nombre": "steven",
+      "correo": "salas@gamil.com",
+      "password": "12345678"
     }
   ],
   "proyectos": [
@@ -134,19 +157,19 @@
       "fechaInicio": "2026-02-20",
       "descripcion": "añadir nuevas señales de transito debido a que las anteriores estan muy deterioradas y varios vecinos se robaron altos para vender el perlin",
       "estado": "Planificación"
-    }
-  ],
-  "serviciosPublicos": [
+    },
     {
-      "id": "4e2b",
-      "tipo": "Limpieza ",
-      "descripcion": "limpieza de parque",
-      "responsable": "Unamu",
-      "estado": "Activo"
+      "id": "ae30",
+      "nombre": "Hola",
+      "presupuesto": "3000",
+      "fechaInicio": "2026-02-19",
+      "descripcion": "hola",
+      "estado": "Planificación"
     }
   ],
+  "serviciosPublicos": [],
   "sesionActiva": {
-    "usuarioId": "34d7",
+    "usuarioId": "de64",
     "rol": "usuario"
   },
   "mensajesContacto": [
@@ -230,6 +253,20 @@
       "comentario": "dbidbibgdibdi",
       "fecha": "18/2/2026",
       "usuarioId": "4b37"
+    },
+    {
+      "id": "0c24",
+      "cedula": "123456789",
+      "comentario": "sdfgfhjkj",
+      "fecha": "18/2/2026",
+      "usuarioId": "34d7"
+    },
+    {
+      "id": "fee7",
+      "cedula": "123456789",
+      "comentario": "qwdefghjkj",
+      "fecha": "18/2/2026",
+      "usuarioId": "34d7"
     }
   ]
 }
