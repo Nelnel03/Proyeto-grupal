@@ -108,6 +108,14 @@
       "correo": "tayro@gmail.com",
       "password": "12345678",
       "telefono": "11111111"
+    },
+    {
+      "id": "3ccb",
+      "nombre": "Samir",
+      "apellido": "García González",
+      "correo": "ygarciafwd@gmail.com",
+      "password": "11112222",
+      "telefono": "11112222"
     }
   ],
   "administradores": [
@@ -146,7 +154,7 @@
     }
   ],
   "sesionActiva": {
-    "usuarioId": "34d7",
+    "usuarioId": "3ccb",
     "rol": "usuario"
   },
   "mensajesContacto": [

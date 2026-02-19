@@ -55,3 +55,17 @@
 .logo-corner img:hover {
     transform: scale(1.1);
 }
+
+#login{
+    display: flex;
+  align-items: center ;
+  justify-content: center;
+    height: var(--header-height);
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    box-shadow: var(--shadow);
+    position: sticky;
+    top: 0;
+    width: 100%;
+    left: 0;
+    z-index: 1000;
+}

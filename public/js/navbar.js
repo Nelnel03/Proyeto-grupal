@@ -21,12 +21,12 @@ async function actualizarNavbar() {
             window.location.href = "../pages/home.html";
         });
     } else {
-        navbarLinks.innerHTML = `
+        /*navbarLinks.innerHTML = `
             <li><a href="../pages/home.html">Inicio</a></li>
             <li><a href="../pages/sobreNosotros.html">Nosotros</a></li>
             <li><a href="../pages/login.html">Login</a></li>
         `;
-    }
+    }*/
 }
 
 actualizarNavbar();
