@@ -111,6 +111,16 @@
   ],
   "funcionarios": [
     {
+      "id": "func1",
+      "nombre": "Funcionario",
+      "apellido": "Municipal",
+      "correo": "funcionario@escazu.go.cr",
+      "password": "123",
+      "rol": "funcionario"
+    }
+  ],
+  "proyectos": [
+    {
       "id": "cd51",
       "nombre": "Proyecto la boda ",
       "presupuesto": "10000",
@@ -119,16 +129,50 @@
       "estado": "Planificación"
     }
   ],
+  "financiamientos": [
+    {
+      "id": "2992",
+      "reporteId": "b390",
+      "tipo": "servicio",
+      "nombre": "wdhjdhwe",
+      "descripcion": "Basado en el reporte b390: Un bache demasiado profundio en el que peligran tanto niños como autos",
+      "monto_solicitado": 0,
+      "responsable": "mop",
+      "monto_aprobado": 0,
+      "estado": "Aprobado",
+      "fecha_solicitud": "2026-02-19",
+      "fecha_resolucion": "2026-02-19",
+      "activo": true,
+      "descripcion_admin": "Basado en el reporte b390: Un bache demasiado profundio en el que peligran tanto niños como autos",
+      "fecha_inicio": "2026-02-19"
+    }
+  ],
   "serviciosPublicos": [
     {
-      "id": "4e2b",
-      "tipo": "Limpieza ",
-      "descripcion": "limpieza de parque",
-      "responsable": "Unamu",
+      "id": "cc39",
+      "tipo": "pavimentacion calle lo acres",
+      "descripcion": "Basado en el reporte b390: Un bache demasiado profundio en el que peligran tanto niños como autos",
+      "responsable": "mop",
+      "fechaInicio": "2026-02-19",
+      "estado": "Activo"
+    },
+    {
+      "id": "160c",
+      "tipo": "wdhjdhwe",
+      "descripcion": "Basado en el reporte b390: Un bache demasiado profundio en el que peligran tanto niños como autos",
+      "responsable": "mop",
+      "fechaInicio": "2026-02-19",
+      "estado": "Activo"
+    },
+    {
+      "id": "6111",
+      "tipo": "wdhjdhwe",
+      "descripcion": "Basado en el reporte b390: Un bache demasiado profundio en el que peligran tanto niños como autos",
+      "responsable": "mop",
+      "fechaInicio": "2026-02-19",
       "estado": "Activo"
     }
   ],
-  "serviciosPublicos": [],
   "sesionActiva": {
     "usuarioId": "adm1",
     "rol": "admin"

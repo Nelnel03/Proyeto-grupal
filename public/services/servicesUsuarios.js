@@ -79,10 +79,10 @@ async function iniciarSesion(email, password) {
     const passwordNormalizado = password.trim();
 
 
+    let usuarioEncontrado = null;
     for (let i = 0; i < usuarios.length; i++) {
         if (usuarios[i].correo === email && usuarios[i].password === password) {
             usuarioEncontrado = usuarios[i];
-            localStorage.setItem("usuarioLogueado", JSON.stringify(usuarioEncontrado))
             break;
         }
     }
@@ -133,11 +133,8 @@ async function obtenerSesionActiva() {
 
 
 async function cerrarSesion() {
-
-    localStorage.removeItem("usuarioLogueado")
-    await fetch(`http://localhost:3000/${endpointSesion}`, {
+    await fetch(`${BASE_URL}/${endpointSesion}`, {
         method: "PUT",
-
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
             usuarioId: null,

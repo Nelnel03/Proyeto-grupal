@@ -11,7 +11,7 @@ const comentarioInput = document.getElementById("comentario");
 btnEnviar.addEventListener("click", async () => {
     const sesion = await obtenerSesionActiva();
 
-    if (!usuarioActivo) {
+    if (!sesion || !sesion.usuarioId) {
         Swal.fire({
             icon: 'warning',
             title: 'Acceso Restringido',
@@ -74,7 +74,7 @@ btnEnviar.addEventListener("click", async () => {
         correoInput.value = "";
         comentarioInput.value = "";
 
-        
+
 
     } catch (error) {
         Swal.fire({

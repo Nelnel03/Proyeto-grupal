@@ -111,9 +111,6 @@ const tablaFinanciamientos = document.getElementById("tablaFinanciamientos");
 const finProyecto = document.getElementById("finProyecto");
 const finMonto = document.getElementById("finMonto");
 const finMontoAprobado = document.getElementById("finMontoAprobado");
-const finEntidad = document.getElementById("finEntidad");
-const finFecha = document.getElementById("finFecha");
-const finFechaAprobacion = document.getElementById("finFechaAprobacion");
 const finEstado = document.getElementById("finEstado");
 const finTipo = document.getElementById("finTipo");
 const finDescripcion = document.getElementById("finDescripcion");
@@ -1126,7 +1123,7 @@ async function procesarResolucionFinanciamiento(esPublicacion) {
     const responsableFinal = finResponsable.value || "Asignado por Admin";
     const fechaInicioFinal = finFechaInicio.value || new Date().toISOString().split('T')[0];
 
-    if (esPublicacion && montoAprobado > montoSolicitado) {
+    if (esPublicacion && nuevoTipo === "vial" && montoAprobado > montoSolicitado) {
         Swal.fire('Error de Validación', 'El monto aprobado no puede ser mayor al monto solicitado para publicar.', 'error');
         return;
     }
@@ -1208,14 +1205,12 @@ async function confirmarEliminarFinanciamiento(id) {
 }
 
 function limpiarFormularioFinanciamiento() {
-    finProyecto.value = "";
-    finMonto.value = "";
-    finMontoAprobado.value = "";
-    finEntidad.value = "";
-    finFecha.value = "";
-    finDescripcion.value = "";
-    finResponsable.value = "";
-    finFechaInicio.value = "";
+    if (finProyecto) finProyecto.value = "";
+    if (finMonto) finMonto.value = "";
+    if (finMontoAprobado) finMontoAprobado.value = "";
+    if (finDescripcion) finDescripcion.value = "";
+    if (finResponsable) finResponsable.value = "";
+    if (finFechaInicio) finFechaInicio.value = "";
     document.getElementById("containerFechaInicio").style.display = "none"; // Hide by default
     financiamientoEditandoId = null;
     formAprobacionFinanciamiento.style.display = "none";
